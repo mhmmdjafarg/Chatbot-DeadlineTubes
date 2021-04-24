@@ -1,4 +1,4 @@
-<?php
+<!-- <?php
 
     $kataPenting = new SplFixedArray(5);
     $kataPenting[0] = "kuis";
@@ -43,4 +43,4 @@
     }
 
     var_dump (isAddTask("Halo bot tolong tambahin PrakTIkum IF2311 pada 23 januari 2020", $kataPenting, $bulan));
-?>
+?> -->

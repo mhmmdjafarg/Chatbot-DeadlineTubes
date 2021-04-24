@@ -63,3 +63,61 @@ function booyermoore($pattern, $text)
   // }
 
   // echo lastoccurence($lo, 'g');
+
+
+  // Delete data
+
+// $input = 'Saya beres mengerjakan tugas 20 gimana ya?';
+// $input = 'Bot tolong hapus tugas 30';
+
+function isdeletetask ($input){
+  $katapentingdelete = array('sudah selesai', 'beres', 'hapus');
+
+  foreach($katapentingdelete as $kata){
+    if(preg_match("/\b".$kata."\b/i", $input)){
+      return true;
+    }
+  }
+  return false;
+}
+
+function getinputtaskid ($input){
+  $input = strtolower($input);
+  $katapenting = array('task', 'tugas');
+  foreach($katapenting as $kata){
+    $index = booyermoore($kata, $input);
+    if($index != -1){
+      $panjangkata = strlen($kata);
+      $index = $panjangkata + $index + 1;
+      $num = '';
+      $i = $index;
+     
+      // skip jika ada spasi lebih sebelum nomor id
+      while($input[$index] == ' '){
+        $index++;
+      }
+
+      for($i = $index; $i < strlen($input); $i++){
+        $num .= $input[$i];
+        if($input[$i] == ' '){
+          break;
+        }
+      }
+      // jika tidak valid atau nomor id tidak ada, mengembalikan nilai 0
+      return (int)$num;
+    }
+  }
+
+  return -1; // tidak ditemukan
+}
+
+// if(isdeletetask($input)){
+//   $nomorId = getinputtaskid($input);
+//   if($nomorId == 0){
+//     echo "Nomor id tidak ada pada perintah atau 0 tidak ada pada daftar Id";
+//   } else if ($nomorId == -1){
+//     echo 'Perintah tidak dikenali';
+//   } else{
+//     echo 'Id yang dicari ' . $nomorId;
+//   }
+// }
