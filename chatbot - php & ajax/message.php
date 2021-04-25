@@ -40,16 +40,23 @@ if (isdeletetask($getMesg)) {
   //     preg_match(((\d{4})-(\d{1,2})-(\d{1,2})), $getMesg))";
 
   // Contoh pesan : tubes IF2230 2021-07-01 bab 10
-  preg_match("/\d{4}-\d{1,2}-\d{1,2}/", $getMesg, $matches1);
 
-  preg_match("/[a-z A-Z]{2}[\d]{4}/", $getMesg, $matches2);
+preg_match("/\d{4}-\d{1,2}-\d{1,2}/", $getMesg,$matches1);
 
-  preg_match("/[K k]uis|[T t]ubes|[U u]jian|[T t]ucil/", $getMesg, $matches3);
+preg_match("/[a-z A-Z]{2}[\d]{4}/", $getMesg,$matches2);
 
-  preg_match("/bab./", $getMesg, $matches4);
+preg_match("/[K k]uis|[T t]ubes|[U u]jian|[T t]ucil/", $getMesg,$matches3);
 
+preg_match("/bab./", $getMesg,$matches4);
 
-  $check_data = "INSERT INTO chatbot (Deadline,Subject,Keyword,Topic) VALUES ('$matches1[0]','$matches2[0]','$matches3[0]','$matches4[0]')";
+preg_match("/[K k]apan|[D d]eadline/", $getMesg,$matches5);
+
+if ('$matches1[0]' != NULL && '$matches2[0]' != NULL && '$matches3[0]' != NULL && '$matches4[0]' != NULL && '$matches5' == NULL ) {
+    $check_data = "INSERT INTO chatbot (Deadline,Matkul,Keyword,Topic) VALUES ('$matches1[0]','$matches2[0]','$matches3[0]','$matches4[0]')";
+}
+else if ('$matches5' != NULL && '$matches2[0]' != NULL && '$matches3[0]' != NULL) {
+    echo $matches5[0];
+}
 
   // if ($matches2[0] == "kuis") {
   //     for i in range database
