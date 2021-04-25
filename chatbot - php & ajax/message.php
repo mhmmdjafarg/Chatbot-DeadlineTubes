@@ -10,7 +10,6 @@ if ($conn->connect_error) {
 // getting user message through ajax
 $getMesg = mysqli_real_escape_string($conn, $_POST['text']);
 
-
 //  ============================================== MULAI MAIN PROGRAM ==============================================
 
 if (isdeletetask($getMesg)) {
@@ -22,13 +21,29 @@ if (isdeletetask($getMesg)) {
   } else {
     $deletequery = 'DELETE FROM chatbot WHERE Id = ' . $nomorId;
     if ($conn->query($deletequery) === TRUE) {
-      if($conn->affected_rows > 0){
+      if ($conn->affected_rows > 0) {
         echo "Id $nomorId berhasil dihapus :D, keren semangat terus ya!";
-      } else{
+      } else {
         echo "Maaff, id yang kamu cari gaada tuh :(";
       }
     } else {
       echo "Terjadi kesalahan pada database";
+    }
+  }
+} else if (isShowTask($getMesg)) {
+  $kata = getTimePeriodWord($getMesg);
+  $query = getShowQuery($getMesg, $kata);
+  if ($query == ';') {
+    echo 'Pesan tidak dikenali';
+  } else {
+    $result = $conn->query($query);
+    if ($result->num_rows > 0) {
+      // output data of each row
+      while ($row = $result->fetch_assoc()) {
+        echo "(ID: " . $row["Id"] . ") " . $row["Deadline"] . " - " . $row["Subjects"] . " - " . $row['Keyword'] . " - " . $row["Topic"] . "<br><br>";
+      }
+    } else {
+      echo "Tidak ada";
     }
   }
 } else {
@@ -41,22 +56,21 @@ if (isdeletetask($getMesg)) {
 
   // Contoh pesan : tubes IF2230 2021-07-01 bab 10
 
-preg_match("/\d{4}-\d{1,2}-\d{1,2}/", $getMesg,$matches1);
+  preg_match("/\d{4}-\d{1,2}-\d{1,2}/", $getMesg, $matches1);
 
-preg_match("/[a-z A-Z]{2}[\d]{4}/", $getMesg,$matches2);
+  preg_match("/[a-z A-Z]{2}[\d]{4}/", $getMesg, $matches2);
 
-preg_match("/[K k]uis|[T t]ubes|[U u]jian|[T t]ucil/", $getMesg,$matches3);
+  preg_match("/[K k]uis|[T t]ubes|[U u]jian|[T t]ucil|tugas/", $getMesg, $matches3);
 
-preg_match("/bab./", $getMesg,$matches4);
+  preg_match("/bab./", $getMesg, $matches4);
 
-preg_match("/[K k]apan|[D d]eadline/", $getMesg,$matches5);
+  preg_match("/[K k]apan|[D d]eadline/", $getMesg, $matches5);
 
-if ($matches1[0] != NULL && $matches2[0] != NULL && $matches3[0] != NULL && $matches4[0] != NULL && $matches5 == NULL ) {
+  if ($matches1[0] != NULL && $matches2[0] != NULL && $matches3[0] != NULL && $matches4[0] != NULL && $matches5 == NULL) {
     $check_data = "INSERT INTO chatbot (Deadline,Subjects,Keyword,Topic) VALUES ('$matches1[0]','$matches2[0]','$matches3[0]','$matches4[0]')";
-}
-else if ($matches5 != NULL && $matches2[0] != NULL && $matches3[0] != NULL) {
+  } else if ($matches5 != NULL && $matches2[0] != NULL && $matches3[0] != NULL) {
     echo $matches5[0];
-}
+  }
 
   // if ($matches2[0] == "kuis") {
   //     for i in range database
@@ -86,6 +100,5 @@ else if ($matches5 != NULL && $matches2[0] != NULL && $matches3[0] != NULL) {
   } else {
     echo "Error: " . $check_data . "<br>" . mysqli_error($conn);
   }
-
-  mysqli_close($conn);
 }
+mysqli_close($conn);

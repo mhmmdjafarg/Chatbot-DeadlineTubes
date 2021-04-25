@@ -1,102 +1,37 @@
-<?php
-// Mengembalikan array posisi kemunculan terakhir suatu karakter pada text T dai dalam pattern P, jika tidak pernah muncul bernilai -1
-function calculatetabelLo($pattern)
+<?php 
+include 'booyermoore.php';
+
+function isdeletetask($input)
 {
-  $lastoccurence = array();
-  $lowerpattern = strtolower($pattern);
-  for ($i = 0; $i < strlen($lowerpattern); $i++) {
-    $lastoccurence[$pattern[$i]] = $i;
-  }
-  return $lastoccurence;
-}
-
-// mengembalikan nilai L(x) 
-function getlastoccurence($tabelLx, $charT)
-{
-  if (array_key_exists($charT, $tabelLx)) {
-    return $tabelLx[$charT];
-  } else {
-    return -1;
-  }
-}
-
-// mengembalikan index pertama text yang match dengan pattern, -1 jika tidak ditemukan
-function booyermoore($pattern, $text)
-{
-  // Simpan array last occurence untuk karakter pada pattern
-  $last = calculatetabelLo($pattern);
-
-  // Pencocokan
-  $n = strlen($text);
-  $panjangpattern = strlen($pattern);
-  $j = $panjangpattern - 1;
-  $i = $j;
-
-  do {
-    if ($pattern[$j] == $text[$i]) {
-      if ($j == 0) {
-        return $i;
-      } else {
-        // looking glass
-        $i--;
-        $j--;
-      }
-    } else {
-      // character jump
-      $lo = getlastoccurence($last, $text[$i]);
-      $i = $i + $panjangpattern - min($j, $lo + 1);
-      $j = $panjangpattern - 1;
-    }
-  } while ($i <= $n - 1);
-
-  return -1;
-}
-
-  // $text = 'abacaabadcabacabaabb';
-  // $pattern = 'abacaabadcabacabaabb';
-  // echo booyermoore($pattern, $text); 
-  // echo $text[10]; 
-  // $lo = calculatetabelLo('abacab');
-  // foreach($lo as $key => $value) {
-  //   echo "Key=" . $key . ", Value=" . $value;
-  //   echo "<br>";
-  // }
-// echo lastoccurence($lo, 'g');
-
-// ================== delete data ===================
-// $input = 'Saya beres mengerjakan tugas 20 gimana ya?';
-// $input = 'Bot tolong hapus tugas 30';
-
-function isdeletetask ($input){
   $katapentingdelete = array('sudah selesai', 'beres', 'hapus');
 
-  foreach($katapentingdelete as $kata){
-    if(preg_match("/\b".$kata."\b/i", $input)){
+  foreach ($katapentingdelete as $kata) {
+    if (preg_match("/\b" . $kata . "\b/i", $input)) {
       return true;
     }
   }
   return false;
 }
 
-function getinputtaskid ($input){
+function getinputtaskid($input)
+{
   $input = strtolower($input);
   $katapenting = array('task', 'tugas');
-  foreach($katapenting as $kata){
+  foreach ($katapenting as $kata) {
     $index = booyermoore($kata, $input);
-    if($index != -1){
+    if ($index != -1) {
       $panjangkata = strlen($kata);
       $index = $panjangkata + $index + 1;
       $num = '';
-      $i = $index;
-     
+
       // skip jika ada spasi lebih sebelum nomor id
-      while($input[$index] == ' '){
+      while ($input[$index] == ' ') {
         $index++;
       }
 
-      for($i = $index; $i < strlen($input); $i++){
+      for ($i = $index; $i < strlen($input); $i++) {
         $num .= $input[$i];
-        if($input[$i] == ' '){
+        if ($input[$i] == ' ') {
           break;
         }
       }
@@ -104,8 +39,165 @@ function getinputtaskid ($input){
       return (int)$num;
     }
   }
-
   return -1; // tidak ditemukan
 }
 
 // ================== show data ===================
+
+// Contoh command :
+// Halo bot tampilkan, halo bot apa saja, halo bot daftar 
+
+$jenistask = array('kuis', 'tubes', 'tucil', 'ujian', 'praktikum', 'pr');
+
+function isShowTask($input)
+{
+  $message = strtolower($input);
+  $katapentingtampilkan = array('apa saja', 'tampilkan', 'daftar');
+  $timeperiod = array(
+    'sejauh ini',
+    'sampai saat ini',
+    'minggu ke depan',
+    'hari ke depan',
+    'hari ini',
+    'antara',
+    'semua'
+  ); // satu lagi yakni mendeteksi 2 tanggal menggunakan regex
+  $tampilkanfound = false;
+  foreach ($katapentingtampilkan as $kata) {
+    if (preg_match("/\b" . $kata . "\b/i", $message)) {
+      $tampilkanfound = true;
+      break;
+    }
+  }
+
+  if ($tampilkanfound) {
+    foreach ($timeperiod as $kata) {
+      if (preg_match("/\b" . $kata . "\b/i", $message)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+// $message = "Halo bot apa saja deadline antara";
+// var_dump(isShowTask($message));
+
+function getTimePeriodWord($input)
+{
+  $message = strtolower($input);
+  $timeperiod = array(
+    'sejauh ini',
+    'sampai saat ini',
+    'minggu ke depan',
+    'hari ke depan',
+    'hari ini',
+    'antara',
+    'semua'
+  ); // satu lagi yakni mendeteksi 2 tanggal menggunakan regex
+  foreach ($timeperiod as $kata) {
+    if (preg_match("/\b" . $kata . "\b/i", $message)) {
+      return $kata;
+    }
+  }
+}
+
+function getShowQuery($input, $kata)
+{
+  $message = strtolower($input);
+  $query = '';
+  if ($kata == 'sejauh ini' || $kata == 'sampai saat ini') {
+    $query = 'SELECT * FROM chatbot WHERE Deadline >= \'' . date("Y-m-d") . '\'';
+  } else if ($kata == 'minggu ke depan' || $kata == 'hari ke depan') {
+    // get number N
+    $index = booyermoore($kata, $message);
+
+    // skip for whitespace
+    $index--;
+    while ($message[$index] == ' ') {
+      $index--;
+    }
+    // go to the first number char
+    while ($message[$index] != ' ') {
+      $index--;
+    }
+    $index++;
+    $num = '';
+    // take num
+    for ($i = $index; $i < strlen($message); $i++) {
+      $num .= $message[$i];
+      if ($message[$i] == ' ') {
+        break;
+      }
+    }
+
+    if (strlen($num) > 0 && (int)$num > 0) {
+      $num = (int)$num; // convert num
+      if ($kata == 'minggu ke depan') {
+        $datenow = strtotime("+$num Weeks");
+      } else {
+        // days
+        $datenow = strtotime("+$num Days");
+      }
+      $query = 'SELECT * FROM chatbot WHERE Deadline BETWEEN \'' . date("Y-m-d") . '\' AND ' .  '\'' . date("Y-m-d", $datenow) . '\'';
+    }
+  } else if ($kata == 'hari ini') {
+    $query = 'SELECT * FROM chatbot WHERE Deadline = \'' . date("Y-m-d") . '\'';
+  } else if ($kata == 'antara') {
+    preg_match_all("(\d{1,4}-\d{1,2}-\d{1,4})", $message, $arraydate);
+    if (count($arraydate) == 2) {
+      $query = 'SELECT * FROM chatbot WHERE Deadline BETWEEN \'' . $arraydate[0][0] . '\' AND ' .  '\'' . $arraydate[0][1] . '\'';
+    }
+  } else if ($kata == 'semua') {
+    $query = 'SELECT * FROM chatbot';
+    return $query;
+  }
+
+  // cek apakah mengandung spesifik task
+  $jenistask = array('kuis', 'tubes', 'tucil', 'ujian', 'praktikum', 'pr');
+  $hastask = false;
+  foreach ($jenistask as $task) {
+    if (preg_match("/\b" . $task . "\b/i", $message)) {
+      $hastask = true;
+      $query .= ' AND Keyword = \'' . $task . '\';';
+      break;
+    }
+  }
+  if (!$hastask) {
+    $query .= ';';
+  }
+  return $query;
+}
+
+
+// $message = 'Tanggal antara 2021-12-12 sampai 2021-12-31';
+// preg_match_all("(\d{1,4}-\d{1,2}-\d{1,4})", $message, $arraydate);
+// $query = 'SELECT * FROM chatbot WHERE Deadline BETWEEN \'' . $arraydate[0][0] . '\' AND ' .  '\'' . $arraydate[0][1] . '\';';
+// echo $query;
+// TEST fungsi get word
+
+// keyword perintah
+$katapentingtampilkan = array('apa saja', 'tampilkan', 'daftar');
+
+// Keyword time
+$timeperiod = array(
+  'sejauh ini',
+  'sampai saat ini',
+  'minggu ke depan',
+  'hari ke depan',
+  'hari ini',
+  'antara',
+  'semua'
+); // satu lagi yakni mendeteksi 2 tanggal menggunakan regex
+
+// keyword task
+$jenistask = array('kuis', 'tubes', 'tucil', 'ujian', 'praktikum', 'pr');
+
+$message = 'Tampilkan deadline 5 HARI KE DEPAN';
+$message = 'Deadline hari ke depan apa saja?';
+
+// if (isShowTask($message)) {
+//   $kata = getTimePeriodWord($message);
+//   $query = getShowQuery($message, $kata);
+//   echo $query;
+// }

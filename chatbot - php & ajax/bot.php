@@ -43,7 +43,6 @@
         }
         });
 
-
         $(document).ready(function(){
             $("#send-btn").on("click", function(){
                 $value = $("#data").val();
