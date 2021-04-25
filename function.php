@@ -61,12 +61,9 @@ function booyermoore($pattern, $text)
   //   echo "Key=" . $key . ", Value=" . $value;
   //   echo "<br>";
   // }
+// echo lastoccurence($lo, 'g');
 
-  // echo lastoccurence($lo, 'g');
-
-
-  // Delete data
-
+// ================== delete data ===================
 // $input = 'Saya beres mengerjakan tugas 20 gimana ya?';
 // $input = 'Bot tolong hapus tugas 30';
 
@@ -111,13 +108,4 @@ function getinputtaskid ($input){
   return -1; // tidak ditemukan
 }
 
-// if(isdeletetask($input)){
-//   $nomorId = getinputtaskid($input);
-//   if($nomorId == 0){
-//     echo "Nomor id tidak ada pada perintah atau 0 tidak ada pada daftar Id";
-//   } else if ($nomorId == -1){
-//     echo 'Perintah tidak dikenali';
-//   } else{
-//     echo 'Id yang dicari ' . $nomorId;
-//   }
-// }
+// ================== show data ===================

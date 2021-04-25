@@ -51,10 +51,10 @@ preg_match("/bab./", $getMesg,$matches4);
 
 preg_match("/[K k]apan|[D d]eadline/", $getMesg,$matches5);
 
-if ('$matches1[0]' != NULL && '$matches2[0]' != NULL && '$matches3[0]' != NULL && '$matches4[0]' != NULL && '$matches5' == NULL ) {
-    $check_data = "INSERT INTO chatbot (Deadline,Matkul,Keyword,Topic) VALUES ('$matches1[0]','$matches2[0]','$matches3[0]','$matches4[0]')";
+if ($matches1[0] != NULL && $matches2[0] != NULL && $matches3[0] != NULL && $matches4[0] != NULL && $matches5 == NULL ) {
+    $check_data = "INSERT INTO chatbot (Deadline,Subjects,Keyword,Topic) VALUES ('$matches1[0]','$matches2[0]','$matches3[0]','$matches4[0]')";
 }
-else if ('$matches5' != NULL && '$matches2[0]' != NULL && '$matches3[0]' != NULL) {
+else if ($matches5 != NULL && $matches2[0] != NULL && $matches3[0] != NULL) {
     echo $matches5[0];
 }
 
