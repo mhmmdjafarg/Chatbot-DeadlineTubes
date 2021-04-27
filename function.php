@@ -145,6 +145,7 @@ function getShowQuery($input, $kata)
   } else if ($kata == 'hari ini') {
     $query = 'SELECT * FROM '. $tabelname . ' WHERE Deadline = \'' . date("Y-m-d") . '\'';
   } else if ($kata == 'antara') {
+    $message = str_replace('/', '-', $message); // jika masukan format menggunakan / convert menjadi -
     preg_match_all("(\d{1,4}-\d{1,2}-\d{1,4})", $message, $arraydate);
     if (count($arraydate[0]) == 2) {
       $query = 'SELECT * FROM '. $tabelname . ' WHERE Deadline BETWEEN \'' . $arraydate[0][0] . '\' AND ' .  '\'' . $arraydate[0][1] . '\'';
@@ -208,6 +209,7 @@ function isDelayTask($input)
 
   $kata = 'deadline';
   // cek tanggal dan ada kata deadline
+  $message = str_replace('/', '-', $message); // jika masukan format menggunakan / convert menjadi -
   if (!$diundur || !preg_match("/\b" . $kata . "\b/i", $message) || !preg_match('(\d{1,4}-\d{1,2}-\d{1,4})', $input)) {
     return false;
   }
@@ -220,6 +222,7 @@ function isDelayTask($input)
 function getDelayQuery($input)
 {
   global $tabelname;
+  $input = str_replace('/', '-', $input); // jika masukan format menggunakan / convert menjadi -
   // ambil tanggal
   preg_match('(\d{1,4}-\d{1,2}-\d{1,4})', $input, $matches);
   $tanggal = $matches[0];
@@ -254,14 +257,22 @@ function getDelayQuery($input)
   return $query;
 }
 
-function deadline($input)
+function isDeadline($input)
 {
-  $katapentingdeadline = array('kapan', 'deadline');
-
-  foreach ($katapentingdeadline as $kata) {
-    if (preg_match("/\b" . $kata . "\b/i", $input)) {
-      return true;
+  $message = strtolower($input);
+  $katakuncideadline = array('kapan', 'deadline');
+  $diundur = false;
+  foreach ($katakuncideadline as $task) {
+    if (preg_match("/" . $task . "\b/i", $message)) {
+      $diundur = true;
+      break;
     }
   }
-  return false;
+
+  $kata = 'deadline';
+  // cek tanggal dan ada kata deadline
+  if (!$diundur || !preg_match("/[a-z A-Z]{2}[\d]{4}/", $message) || !preg_match('/kuis|tubes|tucil|tugas|ujian|praktikum/i', $message)) {
+    return false;
+  }
+  return true;
 }
