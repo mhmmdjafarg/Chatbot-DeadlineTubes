@@ -96,11 +96,11 @@ function isAddTask($input){
       }
     }
     
-    return validateDate($day,$month, $year); 
+    return validateDate($day,$month, $year) && (date("Y-m-d") <= date("Y-m-d",mktime(0,0,0,$month,$day,$year))); 
 
   }
-  $isdatevalid = preg_match("/pada (\d{2})([\-\/\.\s])(\d{2})\g{-2}(\d{4})/i",$input,$date);
-  return validateDate((int)$date[1],(int)$date[3], (int)$date[4]);
+  preg_match("/pada (\d{2})([\-\/\.\s])(\d{2})\g{-2}(\d{4})/i",$input,$date);
+  return validateDate((int)$date[1],(int)$date[3], (int)$date[4]) && (date("Y-m-d") <= date("Y-m-d",mktime(0,0,0,(int)$date[3],(int)$date[1],(int)$date[4]))); 
   
 }
 
@@ -152,12 +152,12 @@ function addTask($input){
     $topik .= $input[$iterate];
     $iterate++;
   }
-  $query = "INSERT INTO chatbot(Deadline,Subjects,Keyword,Topic) VALUES(\"".date("Y-m-d",$d)."\", \"".$kodekuliah."\", \"".$jenistugas."\",\"".$topik."\")";
-  echo $query;
+  global $tabelname;
+  $query = "INSERT INTO ".$tabelname."(Deadline,Subjects,Keyword,Topic) VALUES(\"".date("Y-m-d",$d)."\", \"".$kodekuliah."\", \"".$jenistugas."\",\"".$topik."\")";
   return $query;
 
 }
-addTask("Halo bot tolong tambahin pr IF2311 membajak sawah pada 23 januari 2020");
+// addTask("Halo bot tolong tambahin pr IF2311 membajak sawah pada 23 mei 2021");
 
 function isShowTask($input)
 {

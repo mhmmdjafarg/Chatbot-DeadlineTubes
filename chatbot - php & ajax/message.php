@@ -11,8 +11,16 @@ if ($conn->connect_error) {
 $getMesg = mysqli_real_escape_string($conn, $_POST['text']);
 
 //  ============================================== MULAI MAIN PROGRAM ==============================================
-
-if (isdeletetask($getMesg)) {
+if (isAddTask($getMesg)){
+  global $tabelname;
+  $query = addTask($getMesg);
+  $result = $conn->query($query);
+  $query = "SELECT * FROM ".$tabelname." WHERE Id = (SELECT max(Id) from ".$tabelname.")";
+  $result = $conn->query($query);
+  $row = $result -> fetch_assoc();
+  echo "Task berhasil dicatat\n (ID: " . $row["Id"] . ") " . $row["Deadline"] . " - " . $row["Subjects"] . " - " . $row['Keyword'] . " - " . $row["Topic"] . "<br><br>";
+}
+else if (isdeletetask($getMesg)) {
   $nomorId = getinputtaskid($getMesg);
   if ($nomorId == 0) {
     echo "Nomor id ga bisa aku temuin, atau kamu cari nomor id 0 dimana itu tidak ada";
