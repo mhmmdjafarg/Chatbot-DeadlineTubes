@@ -60,7 +60,26 @@ if (isdeletetask($getMesg)) {
       echo "Gagal memperbarui task, id tidak ada atau deadline yang kamu masukan salah";
     }
   }
-} 
+} else if (deadline($getMesg)) {
+  preg_match("/[a-z A-Z]{2}[\d]{4}/", $getMesg, $matches2);
+  preg_match("/kuis|tubes|tucil|tugas|ujian/i", $getMesg, $matches3);
+  // echo $matches2[0];
+  // echo $matches3[0];
+  $query = "SELECT * FROM chatbot WHERE Matkul = '$matches2[0]' AND Keyword = '$matches3[0]'";
+  if ($query == ';') {
+    echo 'Pesan tidak dikenali';
+  } 
+  else {
+    $result = $conn->query($query);
+    if ($result->num_rows > 0) {
+      // output data of each row
+      while ($row = $result->fetch_assoc()) {
+        echo $row["Deadline"];
+      }
+    } else {
+      echo "Tidak ada";
+    }
+  }
 else {
   // INI BUAT SEMENTARA AJA ELSE NYA NANTI DIRAPIHIN
   //checking user query to database query

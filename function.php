@@ -258,3 +258,15 @@ function getDelayQuery($input)
   }
   return $query;
 }
+
+function deadline($input)
+{
+  $katapentingdeadline = array('kapan', 'deadline');
+
+  foreach ($katapentingdeadline as $kata) {
+    if (preg_match("/\b" . $kata . "\b/i", $input)) {
+      return true;
+    }
+  }
+  return false;
+}
