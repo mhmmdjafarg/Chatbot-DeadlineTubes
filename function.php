@@ -1,5 +1,7 @@
-<?php 
+<?php
 include 'booyermoore.php';
+
+$tabelname = 'chatbot';
 
 function isdeletetask($input)
 {
@@ -42,17 +44,15 @@ function getinputtaskid($input)
   return -1; // tidak ditemukan
 }
 
+
 // ================== show data ===================
-
 // Contoh command :
-// Halo bot tampilkan, halo bot apa saja, halo bot daftar 
+// Halo bot tampilkan deadline kuis sejauh ini, halo bot apa saja deadline hari ini, halo bot daftar deadline 5 minggu ke depan 
 
-$jenistask = array('kuis', 'tubes', 'tucil', 'ujian', 'praktikum', 'pr');
+$jenistask = array('kuis', 'tubes', 'tucil', 'ujian', 'praktikum');
 
 function isShowTask($input)
 {
-
-
   $message = strtolower($input);
   $katapentingtampilkan = array('apa saja', 'tampilkan', 'daftar');
   $timeperiod = array(
@@ -152,7 +152,7 @@ function getShowQuery($input, $kata)
     $query = 'SELECT * FROM chatbot WHERE Deadline = \'' . date("Y-m-d") . '\'';
   } else if ($kata == 'antara') {
     preg_match_all("(\d{1,4}-\d{1,2}-\d{1,4})", $message, $arraydate);
-    if (count($arraydate) == 2) {
+    if (count($arraydate[0]) == 2) {
       $query = 'SELECT * FROM chatbot WHERE Deadline BETWEEN \'' . $arraydate[0][0] . '\' AND ' .  '\'' . $arraydate[0][1] . '\'';
     }
   } else if ($kata == 'semua') {
@@ -161,7 +161,7 @@ function getShowQuery($input, $kata)
   }
 
   // cek apakah mengandung spesifik task
-  $jenistask = array('kuis', 'tubes', 'tucil', 'ujian', 'praktikum', 'pr');
+  $jenistask = array('kuis', 'tubes', 'tucil', 'ujian', 'praktikum');
   $hastask = false;
   foreach ($jenistask as $task) {
     if (preg_match("/\b" . $task . "\b/i", $message)) {
@@ -175,13 +175,6 @@ function getShowQuery($input, $kata)
   }
   return $query;
 }
-
-
-// $message = 'Tanggal antara 2021-12-12 sampai 2021-12-31';
-// preg_match_all("(\d{1,4}-\d{1,2}-\d{1,4})", $message, $arraydate);
-// $query = 'SELECT * FROM chatbot WHERE Deadline BETWEEN \'' . $arraydate[0][0] . '\' AND ' .  '\'' . $arraydate[0][1] . '\';';
-// echo $query;
-// TEST fungsi get word
 
 // keyword perintah
 $katapentingtampilkan = array('apa saja', 'tampilkan', 'daftar');
@@ -199,19 +192,69 @@ $timeperiod = array(
 
 // keyword task
 $jenistask = array('kuis', 'tubes', 'tucil', 'ujian', 'praktikum', 'pr');
-
 $message = 'Tampilkan deadline 5 HARI KE DEPAN';
 $message = 'Deadline hari ke depan apa saja?';
 
-// if (isShowTask($message)) {
-//   $kata = getTimePeriodWord($message);
-//   $query = getShowQuery($message, $kata);
-//   echo $query;
-// }
 
-
-// MENGUPDATE JADWAL / MENGUNDUR DEADLINE
-function isDelayTask($input){
+// MENGUPDATE JADWAL / MENGUNDUR DEADLINE ===========================================================
+// Deadline task X diundur menjadi 2021-04-28
+// perbarui deadline task X menjadi 2021-04-28
+function isDelayTask($input)
+{
   $message = strtolower($input);
-  
+  $katakuncidiundur = array('diundur', 'jadwal ulang', 'perbarui');
+  $diundur = false;
+  foreach ($katakuncidiundur as $task) {
+    if (preg_match("/" . $task . "\b/i", $message)) {
+      $diundur = true;
+      break;
+    }
+  }
+
+  $kata = 'deadline';
+  // cek tanggal dan ada kata deadline
+  if (!$diundur || !preg_match("/\b" . $kata . "\b/i", $message) || !preg_match('(\d{1,4}-\d{1,2}-\d{1,4})', $input)) {
+    return false;
+  }
+  return true;
+}
+
+// $message = 'Deadline task 20 jadwal ulang menjadi 2021-04-28';
+// var_dump(isDelayTask($message));
+// echo getDelayQuery($message);
+function getDelayQuery($input)
+{
+  $tabelname = 'chatbot';
+  // ambil tanggal
+  preg_match('(\d{1,4}-\d{1,2}-\d{1,4})', $input, $matches);
+  $tanggal = $matches[0];
+  $message = strtolower($input);
+  $index = booyermoore('task', $message);
+
+  // go to the first number char
+  $index += 4;
+  while ($message[$index] == ' ') {
+    $index++;
+  }
+  $num = '';
+  // take num
+  for ($i = $index; $i < strlen($message); $i++) {
+    $num .= $message[$i];
+    if ($message[$i] == ' ') {
+      break;
+    }
+  }
+
+  $num = (int)$num;
+  $query = '';
+  if ($num > 0) {
+    $tanggal = strtotime($tanggal);
+    if(date("Y-m-d", $tanggal) > date("Y-m-d")){
+      // tanggal baru harus lebih besar dari hari ini
+      $query = 'UPDATE ' . $tabelname . ' SET Deadline = \'' . date("Y-m-d", $tanggal) . '\' WHERE Id = ' . $num . ';';
+    } else{
+      $query = 'Tanggal tidak valid';
+    }
+  }
+  return $query;
 }
