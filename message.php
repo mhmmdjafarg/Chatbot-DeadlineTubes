@@ -1,5 +1,5 @@
 <?php
-include '../function.php';
+include 'src/function.php';
 // connecting to database
 $conn = mysqli_connect("localhost", "root", "", "bot") or die("Database Error");
 
