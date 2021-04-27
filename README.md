@@ -1,6 +1,17 @@
 # Deadline-Tubes
 
+
+
 ## Kata kunci perintah
+### Kumpulan kata kunci
+- kata kunci task ('kuis', 'tubes', 'tucil', 'ujian', 'praktikum', 'tugas', 'pr')
+- Kata kunci addtask ()
+- kata kunci hapus task ('sudah selesai', 'beres', 'hapus')
+- Kata kunci tampilkan task ('apa saja', 'tampilkan', 'daftar')
+- Kata kunci time period ('sejauh ini', 'sampai saat ini', 'minggu ke depan', 'hari ke depan', 'hari ini', 'antara', 'semua')
+- kata kunci perbarui task ('diundur', 'jadwal ulang', 'perbarui')
+- kata kunci spesifik task ('kapan', 'deadline')
+- kata kunci help ('bisa lakukan apa', 'bisa ngapain')
 
 ### Add task
 - Mengandung kata kunci task ('kuis', 'tubes', 'tucil', 'ujian', 'praktikum', 'tugas', 'pr')
