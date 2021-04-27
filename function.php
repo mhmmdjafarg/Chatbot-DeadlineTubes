@@ -404,4 +404,10 @@ function lev ($str1, $str2){
   return $matriks[$size2][$size1];
 }
 
-var_dump(lev("halooo","halo"));
+function isTypo($str1,$str2){
+  $lev = lev($str1,$str2);
+  $maks = max(strlen($str1), strlen($str2));
+  return $lev <= ($maks/4);
+}
+
+// var_dump(isTypo("haloo","halo"));
