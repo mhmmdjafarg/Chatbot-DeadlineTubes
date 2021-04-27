@@ -377,3 +377,31 @@ function isDeadline($input)
   }
   return true;
 }
+
+// ================== leviathan ===================
+function lev ($str1, $str2){
+  $size1 = strlen($str1);
+  $size2 = strlen($str2);
+  $matriks = array();
+  for ($i = 0 ; $i < $size2+1; $i++){
+    $dummy = array();
+    for ($j = 0; $j < $size1+1; $j++){
+      array_push($dummy,($i ==0 || $j==0 ? max($i,$j) : 0));
+    }
+    array_push($matriks,$dummy);
+  }
+  // var_dump($matriks);
+  for ($i = 1 ; $i <= $size2; $i++){
+    for ($j = 1; $j <= $size1; $j++){
+      if (min($i,$j) == 0){
+        $matriks[$i][$j] = max($i,$j);
+      }else{
+        $matriks[$i][$j] = min(min($matriks[$i][$j-1]+1,$matriks[$i-1][$j]+1), $matriks[$i-1][$j-1] + ($str1[$j-1] == $str2[$i-1] ? 0 : 1));
+      }
+    }
+  }
+  // var_dump($matriks);
+  return $matriks[$size2][$size1];
+}
+
+var_dump(lev("halooo","halo"));

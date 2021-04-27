@@ -3,10 +3,11 @@
 ## Kata kunci perintah
 
 ### Add task
-- Mengandung kata kunci task
-- Mengandung kode kuliah yang valid
+- Mengandung kata kunci task ('kuis', 'tubes', 'tucil', 'ujian', 'praktikum', 'tugas', 'pr')
+- Mengandung kode kuliah yang valid (2 huruf dan 4 angka)
 - Mengandung tanggal yang valid sebagai deadline yang didahului kata "pada"
 - Meletakkan topik tugas di antara kode kuliah dan kata "pada" sebelum tanggal deadline
+- Contoh `Halo bot tolong tambahin pr IF2311 membajak sawah pada 23 mei 2021`
 
 ### Hapus task
 - Mengandung kata kunci  'sudah selesai', 'beres', 'hapus',
