@@ -1,15 +1,10 @@
 <?php
 include 'booyermoore.php';
+
 $bulan = array("januari", "februari", "maret", "april", "mei", "juni", "juli", "agustus", "september", "oktober", "november", "desember");
-
-function validateDate($day, $month, $year){
-  return checkdate($month,  $day, $year);
-}
-
-
 // GLOBAL VARIABLES
 $tabelname = 'chatbot';
-$jenistask = array('kuis', 'tubes', 'tucil', 'ujian', 'praktikum', 'tugas');
+$jenistask = array('kuis', 'tubes', 'tucil', 'ujian', 'praktikum', 'tugas', 'pr');
 $timeperiod = array(
   'sejauh ini',
   'sampai saat ini',
@@ -20,6 +15,8 @@ $timeperiod = array(
   'semua'
 );
 
+
+// ================== delete task ===================
 function isdeletetask($input)
 {
   $katapentingdelete = array('sudah selesai', 'beres', 'hapus');
@@ -61,13 +58,11 @@ function getinputtaskid($input)
   return -1; // tidak ditemukan
 }
 
+function validateDate($day, $month, $year){
+  return checkdate($month,  $day, $year);
+}
 
-// ================== show data ===================
-// Contoh command :
-// Halo bot tampilkan, halo bot apa saja, halo bot daftar 
-
-$jenistask = array('kuis', 'tubes', 'tucil', 'ujian', 'praktikum', 'pr');
-
+// ================== add task ===================
 function isAddTask($input){
   global $bulan;
   global $jenistask;
@@ -297,7 +292,7 @@ function getShowQuery($input, $kata)
 // $message = 'Deadline hari ke depan apa saja?';
 
 
-// MENGUPDATE JADWAL / MENGUNDUR DEADLINE ===========================================================
+// ================== update task ===================
 // Deadline task X diundur menjadi 2021-04-28
 // perbarui deadline task X menjadi 2021-04-28
 function isDelayTask($input)
@@ -362,6 +357,7 @@ function getDelayQuery($input)
   return $query;
 }
 
+// ================== get specific task ===================
 function isDeadline($input)
 {
   $message = strtolower($input);
