@@ -259,14 +259,22 @@ function getDelayQuery($input)
   return $query;
 }
 
-function deadline($input)
+function isDeadline($input)
 {
-  $katapentingdeadline = array('kapan', 'deadline');
-
-  foreach ($katapentingdeadline as $kata) {
-    if (preg_match("/\b" . $kata . "\b/i", $input)) {
-      return true;
+  $message = strtolower($input);
+  $katakuncideadline = array('kapan', 'deadline');
+  $diundur = false;
+  foreach ($katakuncidiundur as $task) {
+    if (preg_match("/" . $task . "\b/i", $message)) {
+      $diundur = true;
+      break;
     }
   }
-  return false;
+
+  $kata = 'deadline';
+  // cek tanggal dan ada kata deadline
+  if (!$diundur || !preg_match("/[a-z A-Z]{2}[\d]{4}/", $message) || !preg_match('/kuis|tubes|tucil|tugas|ujian/i', $message)) {
+    return false;
+  }
+  return true;
 }
