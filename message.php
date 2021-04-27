@@ -1,7 +1,7 @@
 <?php
-include '../function.php';
+include 'src/function.php';
 // connecting to database
-$conn = mysqli_connect("localhost", "root", "", "bot") or die("Database Error");
+$conn = mysqli_connect("localhost", "root", "&B|!4#oYhXk]||gz", "chatbot") or die("Database Error");
 
 // Check connection
 if ($conn->connect_error) {
