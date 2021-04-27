@@ -2,6 +2,12 @@
 
 ## Kata kunci perintah
 
+### Add task
+- Mengandung kata kunci task
+- Mengandung kode kuliah yang valid
+- Mengandung tanggal yang valid sebagai deadline yang didahului kata "pada"
+- Meletakkan topik tugas di antara kode kuliah dan kata "pada" sebelum tanggal deadline
+
 ### Hapus task
 - Mengandung kata kunci  'sudah selesai', 'beres', 'hapus',
 - Mengandung kata kunci 'task' diikuti nomor ID

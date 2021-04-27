@@ -19,8 +19,24 @@ if (isAddTask($getMesg)){
   $result = $conn->query($query);
   $row = $result -> fetch_assoc();
   echo "Task berhasil dicatat\n (ID: " . $row["Id"] . ") " . $row["Deadline"] . " - " . $row["Subjects"] . " - " . $row['Keyword'] . " - " . $row["Topic"] . "<br><br>";
-}
-else if (isdeletetask($getMesg)) {
+}else if(isAskingForHelp($getMesg)){
+  echo "[Fitur]\n
+        1. Menambahkan task baru\n
+        2. Menghapus task dengan id tertentu\n
+        3. Menampilkan task\n
+        4. Memperbarui task\n
+        5. Menampilkan deadline suatu task\n
+        \n
+        [Daftar kata penting]\n
+        1. kuis\n
+        2. tubes\n
+        3. tucil\n
+        4. ujian\n
+        5. praktikum\n
+        6. tugas\n
+        \n
+        Lebih lengkapnya baca readme : ntar kasi link readme ke sini";
+}else if (isdeletetask($getMesg)) {
   $nomorId = getinputtaskid($getMesg);
   if ($nomorId == 0) {
     echo "Nomor id ga bisa aku temuin, atau kamu cari nomor id 0 dimana itu tidak ada";

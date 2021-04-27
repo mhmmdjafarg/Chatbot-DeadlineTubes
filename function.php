@@ -159,6 +159,11 @@ function addTask($input){
 }
 // addTask("Halo bot tolong tambahin pr IF2311 membajak sawah pada 23 mei 2021");
 
+function isAskingForHelp($input){
+  return preg_match("/(?=.*bisa)((?=.*lakukan)(?=.*apa)|(?=.*ngapain))\w*/i",$input) ? true : false;
+}
+
+
 function isShowTask($input)
 {
   $message = strtolower($input);
