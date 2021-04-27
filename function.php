@@ -51,6 +51,8 @@ $jenistask = array('kuis', 'tubes', 'tucil', 'ujian', 'praktikum', 'pr');
 
 function isShowTask($input)
 {
+
+
   $message = strtolower($input);
   $katapentingtampilkan = array('apa saja', 'tampilkan', 'daftar');
   $timeperiod = array(
@@ -62,6 +64,11 @@ function isShowTask($input)
     'antara',
     'semua'
   ); // satu lagi yakni mendeteksi 2 tanggal menggunakan regex
+
+  $kata = 'deadline';
+  if (!preg_match("/\b" . $kata . "\b/i", $message)) {
+    return false;
+  }
   $tampilkanfound = false;
   foreach ($katapentingtampilkan as $kata) {
     if (preg_match("/\b" . $kata . "\b/i", $message)) {
@@ -201,3 +208,10 @@ $message = 'Deadline hari ke depan apa saja?';
 //   $query = getShowQuery($message, $kata);
 //   echo $query;
 // }
+
+
+// MENGUPDATE JADWAL / MENGUNDUR DEADLINE
+function isDelayTask($input){
+  $message = strtolower($input);
+  
+}

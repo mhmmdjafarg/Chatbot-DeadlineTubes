@@ -60,7 +60,7 @@ if (isdeletetask($getMesg)) {
 
   preg_match("/[a-z A-Z]{2}[\d]{4}/", $getMesg, $matches2);
 
-  preg_match("/[K k]uis|[T t]ubes|[U u]jian|[T t]ucil|tugas/", $getMesg, $matches3);
+  preg_match("/[K k]uis|[T t]ubes|[U u]jian|[T t]ucil/", $getMesg, $matches3);
 
   preg_match("/bab./", $getMesg, $matches4);
 
