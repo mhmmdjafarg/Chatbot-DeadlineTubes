@@ -1,12 +1,6 @@
 <?php
 include 'booyermoore.php';
 $bulan = array("januari", "februari", "maret", "april", "mei", "juni", "juli", "agustus", "september", "oktober", "november", "desember");
-
-function validateDate($day, $month, $year){
-  return checkdate($month,  $day, $year);
-}
-
-
 // GLOBAL VARIABLES
 $tabelname = 'chatbot';
 $jenistask = array('kuis', 'tubes', 'tucil', 'ujian', 'praktikum', 'tugas');
@@ -20,6 +14,8 @@ $timeperiod = array(
   'semua'
 );
 
+
+// ================== delete task ===================
 function isdeletetask($input)
 {
   $katapentingdelete = array('sudah selesai', 'beres', 'hapus');
@@ -61,13 +57,11 @@ function getinputtaskid($input)
   return -1; // tidak ditemukan
 }
 
+function validateDate($day, $month, $year){
+  return checkdate($month,  $day, $year);
+}
 
-// ================== show data ===================
-// Contoh command :
-// Halo bot tampilkan, halo bot apa saja, halo bot daftar 
-
-$jenistask = array('kuis', 'tubes', 'tucil', 'ujian', 'praktikum', 'pr');
-
+// ================== add task ===================
 function isAddTask($input){
   global $bulan;
   global $jenistask;
@@ -159,6 +153,10 @@ function addTask($input){
 }
 // addTask("Halo bot tolong tambahin pr IF2311 membajak sawah pada 23 mei 2021");
 
+
+// ================== show task ===================
+// Contoh command :
+// Halo bot tampilkan, halo bot apa saja, halo bot daftar 
 function isShowTask($input)
 {
   $message = strtolower($input);
@@ -292,7 +290,7 @@ function getShowQuery($input, $kata)
 // $message = 'Deadline hari ke depan apa saja?';
 
 
-// MENGUPDATE JADWAL / MENGUNDUR DEADLINE ===========================================================
+// ================== update task ===================
 // Deadline task X diundur menjadi 2021-04-28
 // perbarui deadline task X menjadi 2021-04-28
 function isDelayTask($input)
@@ -357,6 +355,7 @@ function getDelayQuery($input)
   return $query;
 }
 
+// ================== get specific task ===================
 function isDeadline($input)
 {
   $message = strtolower($input);

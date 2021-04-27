@@ -11,16 +11,15 @@ if ($conn->connect_error) {
 $getMesg = mysqli_real_escape_string($conn, $_POST['text']);
 
 //  ============================================== MULAI MAIN PROGRAM ==============================================
-if (isAddTask($getMesg)){
+if (isAddTask($getMesg)) {
   global $tabelname;
   $query = addTask($getMesg);
   $result = $conn->query($query);
-  $query = "SELECT * FROM ".$tabelname." WHERE Id = (SELECT max(Id) from ".$tabelname.")";
+  $query = "SELECT * FROM " . $tabelname . " WHERE Id = (SELECT max(Id) from " . $tabelname . ")";
   $result = $conn->query($query);
-  $row = $result -> fetch_assoc();
+  $row = $result->fetch_assoc();
   echo "Task berhasil dicatat\n (ID: " . $row["Id"] . ") " . $row["Deadline"] . " - " . $row["Subjects"] . " - " . $row['Keyword'] . " - " . $row["Topic"] . "<br><br>";
-}
-else if (isdeletetask($getMesg)) {
+} else if (isdeletetask($getMesg)) {
   $nomorId = getinputtaskid($getMesg);
   if ($nomorId == 0) {
     echo "Nomor id ga bisa aku temuin, atau kamu cari nomor id 0 dimana itu tidak ada";
@@ -54,11 +53,11 @@ else if (isdeletetask($getMesg)) {
       echo "Tidak ada";
     }
   }
-} else if (isDelayTask($getMesg)){
+} else if (isDelayTask($getMesg)) {
   $query = getDelayQuery($getMesg);
-  if($query == ''){
+  if ($query == '') {
     echo 'Tambahkan id task pada pesan ya, contoh: (task X) X adalah id';
-  } else if ($query == "Tanggal tidak valid"){
+  } else if ($query == "Tanggal tidak valid") {
     echo "Tanggal yang kamu masukan tidak valid, tanggal baru harus lebih besar dari hari ini";
   } else {
     $result = $conn->query($query);
@@ -76,8 +75,7 @@ else if (isdeletetask($getMesg)) {
   $query = "SELECT * FROM chatbot WHERE Subjects = '$matches2[0]' AND Keyword = '$matches3[0]'";
   if ($query == ';') {
     echo 'Pesan tidak dikenali';
-  } 
-  else {
+  } else {
     $result = $conn->query($query);
     if ($result->num_rows > 0) {
       // output data of each row
@@ -88,59 +86,7 @@ else if (isdeletetask($getMesg)) {
       echo "Tidak ada";
     }
   }
-}else {
-  // INI BUAT SEMENTARA AJA ELSE NYA NANTI DIRAPIHIN
-  //checking user query to database query
-  // $check_data = "INSERT INTO chatbot (queries, replies) VALUES ('$getMesg', 'Data sudah ada di database')";
-
-  // $check_data = "INSERT INTO dummydate (tanggal) VALUES (
-  //     preg_match(((\d{4})-(\d{1,2})-(\d{1,2})), $getMesg))";
-
-  // Contoh pesan : tubes IF2230 2021-07-01 bab 10
-
-  preg_match("/\d{4}-\d{1,2}-\d{1,2}/", $getMesg, $matches1);
-
-  preg_match("/[a-z A-Z]{2}[\d]{4}/", $getMesg, $matches2);
-
-  preg_match("/[K k]uis|[T t]ubes|[U u]jian|[T t]ucil/", $getMesg, $matches3);
-
-  preg_match("/bab./", $getMesg, $matches4);
-
-  preg_match("/[K k]apan|[D d]eadline/", $getMesg, $matches5);
-
-  if ($matches1[0] != NULL && $matches2[0] != NULL && $matches3[0] != NULL && $matches4[0] != NULL && $matches5 == NULL) {
-    $check_data = "INSERT INTO chatbot (Deadline,Subjects,Keyword,Topic) VALUES ('$matches1[0]','$matches2[0]','$matches3[0]','$matches4[0]')";
-  } else if ($matches5 != NULL && $matches2[0] != NULL && $matches3[0] != NULL) {
-    echo $matches5[0];
-  }
-
-  // if ($matches2[0] == "kuis") {
-  //     for i in range database
-
-  // }
-  // $run_query = mysqli_query($conn, $check_data) or die("Error");
-
-  // // if user query matched to database query we'll show the reply otherwise it go to else statement
-  // if(mysqli_num_rows($run_query) > 0){
-  //     //fetching replay from the database according to the user query
-  //     $fetch_data = mysqli_fetch_assoc($run_query);
-  //     //storing replay to a varible which we'll send to ajax
-  //     $replay = $fetch_data['replies'];
-  //     echo $replay;
-
-  // }else{
-  //     echo "Sorry can't be able to understand you!";
-  // }
-  // if ($conn->query($check_data) === TRUE) {
-  //     echo "record inserted successfully";
-  // } else {
-  //     echo ($matches[0]);
-  // }
-
-  if (mysqli_query($conn, $check_data)) {
-    echo "New record created successfully";
-  } else {
-    echo "Error: " . $check_data . "<br>" . mysqli_error($conn);
-  }
+} else {
+  echo "Pesan tidak dikenali";
 }
 mysqli_close($conn);
