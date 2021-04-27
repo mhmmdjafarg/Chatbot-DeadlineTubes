@@ -1,5 +1,11 @@
 <?php 
 include 'booyermoore.php';
+$bulan = array("januari", "februari", "maret", "april", "mei", "juni", "juli", "agustus", "september", "oktober", "november", "desember");
+
+function validateDate($day, $month, $year){
+  return checkdate($month,  $day, $year);
+}
+
 
 function isdeletetask($input)
 {
@@ -48,6 +54,98 @@ function getinputtaskid($input)
 // Halo bot tampilkan, halo bot apa saja, halo bot daftar 
 
 $jenistask = array('kuis', 'tubes', 'tucil', 'ujian', 'praktikum', 'pr');
+
+function isAddTask($input){
+  global $bulan;
+  global $jenistask;
+  $isThereTask = -1;
+  $message = strtolower($input);
+  foreach ($jenistask as $kata){
+    if ($isThereTask == -1){
+        $isThereTask = booyermoore($kata, $message);
+    }
+  }
+  if ($isThereTask == -1) return false;
+  if (! preg_match("/\b[a-z]{2}\d{4}\b/i", $input)) return false;
+  $isdateusenamemonth = false;
+  foreach ($bulan as $namabulan){
+      if ($isdateusenamemonth == false){
+          $pattern = "/pada (\d{2}) (".$namabulan.") (\d{4})/i";
+          $isdateusenamemonth = preg_match($pattern,$input,$date);
+      }
+  }
+  if ($isdateusenamemonth){
+    $day = (int) $date[1];
+    $year = (int) $date[3];
+    for ($i = 0; $i < 12; $i++){
+      if ($date[2] == $bulan[$i]){
+        $month = $i+1;
+      }
+    }
+    
+    return validateDate($day,$month, $year); 
+
+  }
+  $isdatevalid = preg_match("/pada (\d{2})([\-\/\.\s])(\d{2})\g{-2}(\d{4})/i",$input,$date);
+  return validateDate((int)$date[1],(int)$date[3], (int)$date[4]);
+  
+}
+
+// var_dump(isAddTask("Halo bot tolong tambahin PrakTIkum IF2311 pada 23 04 2020"));
+
+function addTask($input){
+  $lowerinput = strtolower($input);
+  $idxjenistask = -1;
+  global $jenistask;
+  global $bulan;
+  foreach ($jenistask as $kata){
+    if ($idxjenistask == -1){
+      $idxjenistask = booyermoore($kata, $lowerinput);
+    }
+  }
+  $jenistugas = "";
+  while($input[$idxjenistask] != " "){
+    $jenistugas .= $input[$idxjenistask];
+    $idxjenistask++;
+  }
+  //aman sampai nyimpen jenis tugas
+  preg_match("/\b[a-z]{2}\d{4}\b/i", $input,$match);
+  $kodekuliah = $match[0];
+  $isdateusenamemonth = false;
+  foreach ($bulan as $namabulan){
+    if ($isdateusenamemonth == false){
+        $pattern = "/pada (\d{2}) (".$namabulan.") (\d{4})/i";
+        $isdateusenamemonth = preg_match($pattern,$input,$date);
+      }
+  }
+  if ($isdateusenamemonth){
+    $day = (int) $date[1];
+    $year = (int) $date[3];
+    for ($i = 0; $i < 12; $i++){
+      if ($date[2] == $bulan[$i]){
+        $month = $i+1;
+      }
+    }
+    $d = mktime(0,0,0,$month,$day,$year);
+  }else{
+    preg_match("/pada (\d{2})([\-\/\.\s])(\d{2})\g{-2}(\d{4})/i",$input,$date);
+    $d = mktime(0,0,0,(int)$date[1],(int)$date[3], (int)$date[4]);
+  }
+  $topik = "";
+  $indexpada = booyermoore("pada", $lowerinput)-1;
+  $indexkode = booyermoore($kodekuliah,$input);
+  $iterate = $indexkode + 7;
+  while ($iterate != $indexpada){
+    $topik .= $input[$iterate];
+    $iterate++;
+  }
+  echo $topik;
+  $query = "INSERT INTO chatbot(Deadline,Subjects,Keyword,Topic) VALUES(\"".date("Y-m-d",$d)."\", \"".$kodekuliah."\", \"".$jenistugas."\",\"".$topik."\")";
+  echo $query;
+  return $query;
+
+}
+addTask("Halo bot tolong tambahin praktikum IF2311 membajak sawah pada 23 januari 2020");
 
 function isShowTask($input)
 {
