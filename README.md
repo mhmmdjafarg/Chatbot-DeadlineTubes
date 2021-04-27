@@ -12,7 +12,7 @@
 - Mengandung kata kunci 'apa saja', 'tampilkan', 'daftar'
 - Mengandung kata 'deadline'
 - Mengandung kata bersifat time period berikut : 'sejauh ini', 'sampai saat ini', 'minggu ke depan', 'hari ke depan', 'hari ini', 'antara', 'semua'
-- Opsional, mengandung keyword tugas tertentu antara lain : 'kuis', 'tubes', 'tucil', 'ujian', 'praktikum', 'tugas'
+- Opsional, mengandung keyword tugas tertentu antara lain : 'kuis', 'tubes', 'tucil', 'ujian', 'praktikum', 'tugas', 'pr'
 - Jika menggunakan 'antara' harus mengandung 2 format tanggal masukan YYYY-MM-DD atau YYYY/MM/DD
 - Jika mengandung 'minggu ke depan' atau 'hari ke depan' terdapat Nomor ID sebelum kata tersebut.
 - Contoh : `Halo bot apa saja deadline 5 minggu ke depan ?`
@@ -30,6 +30,6 @@
 
 ### Lihat deadline suatu task
 - Mengandung kata kunci 'kapan' atau 'deadline'
-- Mengandung kata kunci salah satu berikut : 'kuis', 'tubes', 'tucil', 'ujian', 'praktikum', 'tugas'
+- Mengandung kata kunci salah satu berikut : 'kuis', 'tubes', 'tucil', 'ujian', 'praktikum', 'tugas', 'pr'
 - Mengandung nama mata kuliah
 - Contoh `Halo bot deadline tubes IF2230 kapan ?`

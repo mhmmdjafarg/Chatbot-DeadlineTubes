@@ -24,12 +24,18 @@ function getlastoccurence($tabelLx, $charT)
 // mengembalikan index pertama text yang match dengan pattern, -1 jika tidak ditemukan
 function booyermoore($pattern, $text)
 {
+
+  
   // Simpan array last occurence untuk karakter pada pattern
   $last = calculatetabelLo($pattern);
 
   // Pencocokan
   $n = strlen($text);
   $panjangpattern = strlen($pattern);
+  $panjangtext = strlen($text);
+  if($panjangpattern > $panjangtext){
+    return -1;
+  }
   $j = $panjangpattern - 1;
   $i = $j;
 

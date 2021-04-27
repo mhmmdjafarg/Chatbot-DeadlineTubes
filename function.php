@@ -1,9 +1,10 @@
 <?php
 include 'booyermoore.php';
+
 $bulan = array("januari", "februari", "maret", "april", "mei", "juni", "juli", "agustus", "september", "oktober", "november", "desember");
 // GLOBAL VARIABLES
 $tabelname = 'chatbot';
-$jenistask = array('kuis', 'tubes', 'tucil', 'ujian', 'praktikum', 'tugas');
+$jenistask = array('kuis', 'tubes', 'tucil', 'ujian', 'praktikum', 'tugas', 'pr');
 $timeperiod = array(
   'sejauh ini',
   'sampai saat ini',
