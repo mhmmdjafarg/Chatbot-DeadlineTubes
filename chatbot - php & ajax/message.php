@@ -17,7 +17,7 @@ if (isdeletetask($getMesg)) {
   if ($nomorId == 0) {
     echo "Nomor id ga bisa aku temuin, atau kamu cari nomor id 0 dimana itu tidak ada";
   } else if ($nomorId == -1) {
-    echo 'Aku kurang ngerti perintah kamu';
+    echo 'Aku engga ngerti perintah kamu';
   } else {
     $deletequery = 'DELETE FROM chatbot WHERE Id = ' . $nomorId;
     if ($conn->query($deletequery) === TRUE) {
@@ -37,7 +37,7 @@ if (isdeletetask($getMesg)) {
     echo 'Pesan tidak dikenali';
   } else {
     $result = $conn->query($query);
-    if ($result->num_rows > 0) {
+    if (mysqli_num_rows($result) > 0) {
       // output data of each row
       while ($row = $result->fetch_assoc()) {
         echo "(ID: " . $row["Id"] . ") " . $row["Deadline"] . " - " . $row["Subjects"] . " - " . $row['Keyword'] . " - " . $row["Topic"] . "<br><br>";
@@ -46,7 +46,41 @@ if (isdeletetask($getMesg)) {
       echo "Tidak ada";
     }
   }
-} else {
+} else if (isDelayTask($getMesg)){
+  $query = getDelayQuery($getMesg);
+  if($query == ''){
+    echo 'Tambahkan id task pada pesan ya, contoh: (task X) X adalah id';
+  } else if ($query == "Tanggal tidak valid"){
+    echo "Tanggal yang kamu masukan tidak valid, tanggal baru harus lebih besar dari hari ini";
+  } else {
+    $result = $conn->query($query);
+    if ($result && $conn->affected_rows > 0) {
+      echo 'Berhasil memperbarui task';
+    } else {
+      echo "Gagal memperbarui task, id tidak ada atau deadline yang kamu masukan salah";
+    }
+  }
+} else if (isDeadline($getMesg)) {
+  preg_match("/[a-z A-Z]{2}[\d]{4}/", $getMesg, $matches2);
+  preg_match("/kuis|tubes|tucil|tugas|ujian/i", $getMesg, $matches3);
+  // echo $matches2[0];
+  // echo $matches3[0];
+  $query = "SELECT * FROM chatbot WHERE Subjects = '$matches2[0]' AND Keyword = '$matches3[0]'";
+  if ($query == ';') {
+    echo 'Pesan tidak dikenali';
+  } 
+  else {
+    $result = $conn->query($query);
+    if ($result->num_rows > 0) {
+      // output data of each row
+      while ($row = $result->fetch_assoc()) {
+        echo $row["Deadline"];
+      }
+    } else {
+      echo "Tidak ada";
+    }
+  }
+}else {
   // INI BUAT SEMENTARA AJA ELSE NYA NANTI DIRAPIHIN
   //checking user query to database query
   // $check_data = "INSERT INTO chatbot (queries, replies) VALUES ('$getMesg', 'Data sudah ada di database')";

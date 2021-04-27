@@ -1,4 +1,4 @@
-<?php 
+<?php
 include 'booyermoore.php';
 $bulan = array("januari", "februari", "maret", "april", "mei", "juni", "juli", "agustus", "september", "oktober", "november", "desember");
 
@@ -6,6 +6,19 @@ function validateDate($day, $month, $year){
   return checkdate($month,  $day, $year);
 }
 
+
+// GLOBAL VARIABLES
+$tabelname = 'chatbot';
+$jenistask = array('kuis', 'tubes', 'tucil', 'ujian', 'praktikum', 'tugas');
+$timeperiod = array(
+  'sejauh ini',
+  'sampai saat ini',
+  'minggu ke depan',
+  'hari ke depan',
+  'hari ini',
+  'antara',
+  'semua'
+);
 
 function isdeletetask($input)
 {
@@ -22,7 +35,7 @@ function isdeletetask($input)
 function getinputtaskid($input)
 {
   $input = strtolower($input);
-  $katapenting = array('task', 'tugas');
+  $katapenting = array('task');
   foreach ($katapenting as $kata) {
     $index = booyermoore($kata, $input);
     if ($index != -1) {
@@ -48,8 +61,8 @@ function getinputtaskid($input)
   return -1; // tidak ditemukan
 }
 
-// ================== show data ===================
 
+// ================== show data ===================
 // Contoh command :
 // Halo bot tampilkan, halo bot apa saja, halo bot daftar 
 
@@ -139,29 +152,18 @@ function addTask($input){
     $topik .= $input[$iterate];
     $iterate++;
   }
-  echo $topik;
   $query = "INSERT INTO chatbot(Deadline,Subjects,Keyword,Topic) VALUES(\"".date("Y-m-d",$d)."\", \"".$kodekuliah."\", \"".$jenistugas."\",\"".$topik."\")";
   echo $query;
   return $query;
 
 }
-addTask("Halo bot tolong tambahin praktikum IF2311 membajak sawah pada 23 januari 2020");
+addTask("Halo bot tolong tambahin pr IF2311 membajak sawah pada 23 januari 2020");
 
 function isShowTask($input)
 {
-
-
   $message = strtolower($input);
   $katapentingtampilkan = array('apa saja', 'tampilkan', 'daftar');
-  $timeperiod = array(
-    'sejauh ini',
-    'sampai saat ini',
-    'minggu ke depan',
-    'hari ke depan',
-    'hari ini',
-    'antara',
-    'semua'
-  ); // satu lagi yakni mendeteksi 2 tanggal menggunakan regex
+  global $timeperiod;
 
   $kata = 'deadline';
   if (!preg_match("/\b" . $kata . "\b/i", $message)) {
@@ -191,15 +193,7 @@ function isShowTask($input)
 function getTimePeriodWord($input)
 {
   $message = strtolower($input);
-  $timeperiod = array(
-    'sejauh ini',
-    'sampai saat ini',
-    'minggu ke depan',
-    'hari ke depan',
-    'hari ini',
-    'antara',
-    'semua'
-  ); // satu lagi yakni mendeteksi 2 tanggal menggunakan regex
+  global $timeperiod;
   foreach ($timeperiod as $kata) {
     if (preg_match("/\b" . $kata . "\b/i", $message)) {
       return $kata;
@@ -209,10 +203,12 @@ function getTimePeriodWord($input)
 
 function getShowQuery($input, $kata)
 {
+  global $tabelname;
   $message = strtolower($input);
   $query = '';
   if ($kata == 'sejauh ini' || $kata == 'sampai saat ini') {
-    $query = 'SELECT * FROM chatbot WHERE Deadline >= \'' . date("Y-m-d") . '\'';
+    $query = 'SELECT * FROM ' . $tabelname . ' WHERE Deadline >= \'' . date("Y-m-d") . '\'';
+    // $query = 'SELECT * FROM chatbot WHERE Deadline >= \'' . date("Y-m-d") . '\'';
   } else if ($kata == 'minggu ke depan' || $kata == 'hari ke depan') {
     // get number N
     $index = booyermoore($kata, $message);
@@ -244,22 +240,24 @@ function getShowQuery($input, $kata)
         // days
         $datenow = strtotime("+$num Days");
       }
-      $query = 'SELECT * FROM chatbot WHERE Deadline BETWEEN \'' . date("Y-m-d") . '\' AND ' .  '\'' . date("Y-m-d", $datenow) . '\'';
+      $query = 'SELECT * FROM '. $tabelname . ' WHERE Deadline BETWEEN \'' . date("Y-m-d") . '\' AND ' .  '\'' . date("Y-m-d", $datenow) . '\'';
     }
   } else if ($kata == 'hari ini') {
-    $query = 'SELECT * FROM chatbot WHERE Deadline = \'' . date("Y-m-d") . '\'';
+    $query = 'SELECT * FROM '. $tabelname . ' WHERE Deadline = \'' . date("Y-m-d") . '\'';
   } else if ($kata == 'antara') {
+    $message = str_replace('/', '-', $message); // jika masukan format menggunakan / convert menjadi -
     preg_match_all("(\d{1,4}-\d{1,2}-\d{1,4})", $message, $arraydate);
-    if (count($arraydate) == 2) {
-      $query = 'SELECT * FROM chatbot WHERE Deadline BETWEEN \'' . $arraydate[0][0] . '\' AND ' .  '\'' . $arraydate[0][1] . '\'';
+    if (count($arraydate[0]) == 2) {
+      $query = 'SELECT * FROM '. $tabelname . ' WHERE Deadline BETWEEN \'' . $arraydate[0][0] . '\' AND ' .  '\'' . $arraydate[0][1] . '\'';
     }
   } else if ($kata == 'semua') {
-    $query = 'SELECT * FROM chatbot';
+    $query = 'SELECT * FROM '. $tabelname;
     return $query;
   }
 
   // cek apakah mengandung spesifik task
-  $jenistask = array('kuis', 'tubes', 'tucil', 'ujian', 'praktikum', 'pr');
+  // $jenistask = array('kuis', 'tubes', 'tucil', 'ujian', 'praktikum');
+  global $jenistask;
   $hastask = false;
   foreach ($jenistask as $task) {
     if (preg_match("/\b" . $task . "\b/i", $message)) {
@@ -274,42 +272,107 @@ function getShowQuery($input, $kata)
   return $query;
 }
 
-
-// $message = 'Tanggal antara 2021-12-12 sampai 2021-12-31';
-// preg_match_all("(\d{1,4}-\d{1,2}-\d{1,4})", $message, $arraydate);
-// $query = 'SELECT * FROM chatbot WHERE Deadline BETWEEN \'' . $arraydate[0][0] . '\' AND ' .  '\'' . $arraydate[0][1] . '\';';
-// echo $query;
-// TEST fungsi get word
-
 // keyword perintah
-$katapentingtampilkan = array('apa saja', 'tampilkan', 'daftar');
+// $katapentingtampilkan = array('apa saja', 'tampilkan', 'daftar');
 
-// Keyword time
-$timeperiod = array(
-  'sejauh ini',
-  'sampai saat ini',
-  'minggu ke depan',
-  'hari ke depan',
-  'hari ini',
-  'antara',
-  'semua'
-); // satu lagi yakni mendeteksi 2 tanggal menggunakan regex
+// // Keyword time
+// $timeperiod = array(
+//   'sejauh ini',
+//   'sampai saat ini',
+//   'minggu ke depan',
+//   'hari ke depan',
+//   'hari ini',
+//   'antara',
+//   'semua'
+// ); // satu lagi yakni mendeteksi 2 tanggal menggunakan regex
 
 // keyword task
-$jenistask = array('kuis', 'tubes', 'tucil', 'ujian', 'praktikum', 'pr');
-
-$message = 'Tampilkan deadline 5 HARI KE DEPAN';
-$message = 'Deadline hari ke depan apa saja?';
-
-// if (isShowTask($message)) {
-//   $kata = getTimePeriodWord($message);
-//   $query = getShowQuery($message, $kata);
-//   echo $query;
-// }
+// $jenistask = array('kuis', 'tubes', 'tucil', 'ujian', 'praktikum', 'tugas');
+// $message = 'Tampilkan deadline 5 HARI KE DEPAN';
+// $message = 'Deadline hari ke depan apa saja?';
 
 
-// MENGUPDATE JADWAL / MENGUNDUR DEADLINE
-function isDelayTask($input){
+// MENGUPDATE JADWAL / MENGUNDUR DEADLINE ===========================================================
+// Deadline task X diundur menjadi 2021-04-28
+// perbarui deadline task X menjadi 2021-04-28
+function isDelayTask($input)
+{
   $message = strtolower($input);
-  
+  $katakuncidiundur = array('diundur', 'jadwal ulang', 'perbarui');
+  $diundur = false;
+  foreach ($katakuncidiundur as $task) {
+    if (preg_match("/" . $task . "\b/i", $message)) {
+      $diundur = true;
+      break;
+    }
+  }
+
+  $kata = 'deadline';
+  // cek tanggal dan ada kata deadline
+  $message = str_replace('/', '-', $message); // jika masukan format menggunakan / convert menjadi -
+  if (!$diundur || !preg_match("/\b" . $kata . "\b/i", $message) || !preg_match('(\d{1,4}-\d{1,2}-\d{1,4})', $input)) {
+    return false;
+  }
+  return true;
+}
+
+// $message = 'Deadline task 20 jadwal ulang menjadi 2021-04-28';
+// var_dump(isDelayTask($message));
+// echo getDelayQuery($message);
+function getDelayQuery($input)
+{
+  global $tabelname;
+  $input = str_replace('/', '-', $input); // jika masukan format menggunakan / convert menjadi -
+  // ambil tanggal
+  preg_match('(\d{1,4}-\d{1,2}-\d{1,4})', $input, $matches);
+  $tanggal = $matches[0];
+  $message = strtolower($input);
+  $index = booyermoore('task', $message);
+
+  // go to the first number char
+  $index += 4;
+  while ($message[$index] == ' ') {
+    $index++;
+  }
+  $num = '';
+  // take num
+  for ($i = $index; $i < strlen($message); $i++) {
+    $num .= $message[$i];
+    if ($message[$i] == ' ') {
+      break;
+    }
+  }
+
+  $num = (int)$num;
+  $query = '';
+  if ($num > 0) {
+    $tanggal = strtotime($tanggal);
+    if(date("Y-m-d", $tanggal) > date("Y-m-d")){
+      // tanggal baru harus lebih besar dari hari ini
+      $query = 'UPDATE ' . $tabelname . ' SET Deadline = \'' . date("Y-m-d", $tanggal) . '\' WHERE Id = ' . $num . ';';
+    } else{
+      $query = 'Tanggal tidak valid';
+    }
+  }
+  return $query;
+}
+
+function isDeadline($input)
+{
+  $message = strtolower($input);
+  $katakuncideadline = array('kapan', 'deadline');
+  $diundur = false;
+  foreach ($katakuncideadline as $task) {
+    if (preg_match("/" . $task . "\b/i", $message)) {
+      $diundur = true;
+      break;
+    }
+  }
+
+  $kata = 'deadline';
+  // cek tanggal dan ada kata deadline
+  if (!$diundur || !preg_match("/[a-z A-Z]{2}[\d]{4}/", $message) || !preg_match('/kuis|tubes|tucil|tugas|ujian|praktikum/i', $message)) {
+    return false;
+  }
+  return true;
 }
