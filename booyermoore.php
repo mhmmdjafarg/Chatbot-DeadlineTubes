@@ -59,17 +59,11 @@ function booyermoore($pattern, $text)
   return -1;
 }
 
-// $text = 'abacaabadcabacabaabb';
-// $pattern = 'abacaabadcabacabaabb';
-// echo booyermoore($pattern, $text); 
-// echo $text[10]; 
-// $lo = calculatetabelLo('abacab');
-// foreach($lo as $key => $value) {
-//   echo "Key=" . $key . ", Value=" . $value;
-//   echo "<br>";
-// }
-// echo lastoccurence($lo, 'g');
-
-// ================== delete data ===================
-// $input = 'Saya beres mengerjakan tugas 20 gimana ya?';
-// $input = 'Bot tolong hapus tugas 30';
+// $tingkat = levenshtein('deadline', 'dealine');
+// echo $tingkat . "<br>";
+// $nilai = $tingkat/strlen('deadline');
+//  if($tingkat/strlen('deadline') <= 0.25 && $nilai > 0){
+//    echo "typo";
+//  } else{
+//    echo 'tidak typo';
+//  }

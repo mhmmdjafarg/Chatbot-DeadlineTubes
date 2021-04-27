@@ -154,11 +154,12 @@ function addTask($input){
 }
 // addTask("Halo bot tolong tambahin pr IF2311 membajak sawah pada 23 mei 2021");
 
+// ================== ask for help ====================
 function isAskingForHelp($input){
   return preg_match("/(?=.*bisa)((?=.*lakukan)(?=.*apa)|(?=.*ngapain))\w*/i",$input) ? true : false;
 }
 
-
+// ================== show task ===================
 function isShowTask($input)
 {
   $message = strtolower($input);
@@ -271,25 +272,6 @@ function getShowQuery($input, $kata)
   }
   return $query;
 }
-
-// keyword perintah
-// $katapentingtampilkan = array('apa saja', 'tampilkan', 'daftar');
-
-// // Keyword time
-// $timeperiod = array(
-//   'sejauh ini',
-//   'sampai saat ini',
-//   'minggu ke depan',
-//   'hari ke depan',
-//   'hari ini',
-//   'antara',
-//   'semua'
-// ); // satu lagi yakni mendeteksi 2 tanggal menggunakan regex
-
-// keyword task
-// $jenistask = array('kuis', 'tubes', 'tucil', 'ujian', 'praktikum', 'tugas');
-// $message = 'Tampilkan deadline 5 HARI KE DEPAN';
-// $message = 'Deadline hari ke depan apa saja?';
 
 
 // ================== update task ===================

@@ -34,6 +34,7 @@ if (isAddTask($getMesg)) {
         4. ujian\n<br>
         5. praktikum\n<br>
         6. tugas\n<br>
+        7. pr\n<br>
         \n<br><br>
         Lebih lengkapnya baca readme : ntar kasi link readme ke sini";
 }else if (isdeletetask($getMesg)) {
@@ -103,7 +104,9 @@ if (isAddTask($getMesg)) {
       echo "Tidak ada";
     }
   }
-} else {
+} else if (strtolower($getMesg) == 'halo' || strtolower($getMesg) == 'hai') {
+  echo "Halo halo, tanya dong aku bisa ngapain aja";
+} else{
   echo "Pesan tidak dikenali";
 }
 mysqli_close($conn);
