@@ -261,9 +261,9 @@ function getDelayQuery($input)
 
 function deadline($input)
 {
-  $jenistask = array('kuis', 'tubes', 'tucil', 'ujian', 'praktikum', 'pr');
+  $katapentingdeadline = array('kapan', 'deadline');
 
-  foreach ($jenistask as $kata) {
+  foreach ($katapentingdeadline as $kata) {
     if (preg_match("/\b" . $kata . "\b/i", $input)) {
       return true;
     }
