@@ -1,7 +1,18 @@
 <?php
 include 'booyermoore.php';
 
+// GLOBAL VARIABLES
 $tabelname = 'chatbot';
+$jenistask = array('kuis', 'tubes', 'tucil', 'ujian', 'praktikum', 'tugas');
+$timeperiod = array(
+  'sejauh ini',
+  'sampai saat ini',
+  'minggu ke depan',
+  'hari ke depan',
+  'hari ini',
+  'antara',
+  'semua'
+);
 
 function isdeletetask($input)
 {
@@ -18,7 +29,7 @@ function isdeletetask($input)
 function getinputtaskid($input)
 {
   $input = strtolower($input);
-  $katapenting = array('task', 'tugas');
+  $katapenting = array('task');
   foreach ($katapenting as $kata) {
     $index = booyermoore($kata, $input);
     if ($index != -1) {
@@ -48,22 +59,11 @@ function getinputtaskid($input)
 // ================== show data ===================
 // Contoh command :
 // Halo bot tampilkan deadline kuis sejauh ini, halo bot apa saja deadline hari ini, halo bot daftar deadline 5 minggu ke depan 
-
-$jenistask = array('kuis', 'tubes', 'tucil', 'ujian', 'praktikum');
-
 function isShowTask($input)
 {
   $message = strtolower($input);
   $katapentingtampilkan = array('apa saja', 'tampilkan', 'daftar');
-  $timeperiod = array(
-    'sejauh ini',
-    'sampai saat ini',
-    'minggu ke depan',
-    'hari ke depan',
-    'hari ini',
-    'antara',
-    'semua'
-  ); // satu lagi yakni mendeteksi 2 tanggal menggunakan regex
+  global $timeperiod;
 
   $kata = 'deadline';
   if (!preg_match("/\b" . $kata . "\b/i", $message)) {
@@ -93,15 +93,7 @@ function isShowTask($input)
 function getTimePeriodWord($input)
 {
   $message = strtolower($input);
-  $timeperiod = array(
-    'sejauh ini',
-    'sampai saat ini',
-    'minggu ke depan',
-    'hari ke depan',
-    'hari ini',
-    'antara',
-    'semua'
-  ); // satu lagi yakni mendeteksi 2 tanggal menggunakan regex
+  global $timeperiod;
   foreach ($timeperiod as $kata) {
     if (preg_match("/\b" . $kata . "\b/i", $message)) {
       return $kata;
@@ -111,10 +103,12 @@ function getTimePeriodWord($input)
 
 function getShowQuery($input, $kata)
 {
+  global $tabelname;
   $message = strtolower($input);
   $query = '';
   if ($kata == 'sejauh ini' || $kata == 'sampai saat ini') {
-    $query = 'SELECT * FROM chatbot WHERE Deadline >= \'' . date("Y-m-d") . '\'';
+    $query = 'SELECT * FROM ' . $tabelname . ' WHERE Deadline >= \'' . date("Y-m-d") . '\'';
+    // $query = 'SELECT * FROM chatbot WHERE Deadline >= \'' . date("Y-m-d") . '\'';
   } else if ($kata == 'minggu ke depan' || $kata == 'hari ke depan') {
     // get number N
     $index = booyermoore($kata, $message);
@@ -146,22 +140,23 @@ function getShowQuery($input, $kata)
         // days
         $datenow = strtotime("+$num Days");
       }
-      $query = 'SELECT * FROM chatbot WHERE Deadline BETWEEN \'' . date("Y-m-d") . '\' AND ' .  '\'' . date("Y-m-d", $datenow) . '\'';
+      $query = 'SELECT * FROM '. $tabelname . ' WHERE Deadline BETWEEN \'' . date("Y-m-d") . '\' AND ' .  '\'' . date("Y-m-d", $datenow) . '\'';
     }
   } else if ($kata == 'hari ini') {
-    $query = 'SELECT * FROM chatbot WHERE Deadline = \'' . date("Y-m-d") . '\'';
+    $query = 'SELECT * FROM '. $tabelname . ' WHERE Deadline = \'' . date("Y-m-d") . '\'';
   } else if ($kata == 'antara') {
     preg_match_all("(\d{1,4}-\d{1,2}-\d{1,4})", $message, $arraydate);
     if (count($arraydate[0]) == 2) {
-      $query = 'SELECT * FROM chatbot WHERE Deadline BETWEEN \'' . $arraydate[0][0] . '\' AND ' .  '\'' . $arraydate[0][1] . '\'';
+      $query = 'SELECT * FROM '. $tabelname . ' WHERE Deadline BETWEEN \'' . $arraydate[0][0] . '\' AND ' .  '\'' . $arraydate[0][1] . '\'';
     }
   } else if ($kata == 'semua') {
-    $query = 'SELECT * FROM chatbot';
+    $query = 'SELECT * FROM '. $tabelname;
     return $query;
   }
 
   // cek apakah mengandung spesifik task
-  $jenistask = array('kuis', 'tubes', 'tucil', 'ujian', 'praktikum');
+  // $jenistask = array('kuis', 'tubes', 'tucil', 'ujian', 'praktikum');
+  global $jenistask;
   $hastask = false;
   foreach ($jenistask as $task) {
     if (preg_match("/\b" . $task . "\b/i", $message)) {
@@ -177,23 +172,23 @@ function getShowQuery($input, $kata)
 }
 
 // keyword perintah
-$katapentingtampilkan = array('apa saja', 'tampilkan', 'daftar');
+// $katapentingtampilkan = array('apa saja', 'tampilkan', 'daftar');
 
-// Keyword time
-$timeperiod = array(
-  'sejauh ini',
-  'sampai saat ini',
-  'minggu ke depan',
-  'hari ke depan',
-  'hari ini',
-  'antara',
-  'semua'
-); // satu lagi yakni mendeteksi 2 tanggal menggunakan regex
+// // Keyword time
+// $timeperiod = array(
+//   'sejauh ini',
+//   'sampai saat ini',
+//   'minggu ke depan',
+//   'hari ke depan',
+//   'hari ini',
+//   'antara',
+//   'semua'
+// ); // satu lagi yakni mendeteksi 2 tanggal menggunakan regex
 
 // keyword task
-$jenistask = array('kuis', 'tubes', 'tucil', 'ujian', 'praktikum', 'pr');
-$message = 'Tampilkan deadline 5 HARI KE DEPAN';
-$message = 'Deadline hari ke depan apa saja?';
+// $jenistask = array('kuis', 'tubes', 'tucil', 'ujian', 'praktikum', 'tugas');
+// $message = 'Tampilkan deadline 5 HARI KE DEPAN';
+// $message = 'Deadline hari ke depan apa saja?';
 
 
 // MENGUPDATE JADWAL / MENGUNDUR DEADLINE ===========================================================
@@ -224,7 +219,7 @@ function isDelayTask($input)
 // echo getDelayQuery($message);
 function getDelayQuery($input)
 {
-  $tabelname = 'chatbot';
+  global $tabelname;
   // ambil tanggal
   preg_match('(\d{1,4}-\d{1,2}-\d{1,4})', $input, $matches);
   $tanggal = $matches[0];

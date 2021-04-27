@@ -17,7 +17,7 @@ if (isdeletetask($getMesg)) {
   if ($nomorId == 0) {
     echo "Nomor id ga bisa aku temuin, atau kamu cari nomor id 0 dimana itu tidak ada";
   } else if ($nomorId == -1) {
-    echo 'Aku kurang ngerti perintah kamu';
+    echo 'Aku engga ngerti perintah kamu';
   } else {
     $deletequery = 'DELETE FROM chatbot WHERE Id = ' . $nomorId;
     if ($conn->query($deletequery) === TRUE) {
@@ -80,7 +80,7 @@ if (isdeletetask($getMesg)) {
       echo "Tidak ada";
     }
   }
-else {
+}else {
   // INI BUAT SEMENTARA AJA ELSE NYA NANTI DIRAPIHIN
   //checking user query to database query
   // $check_data = "INSERT INTO chatbot (queries, replies) VALUES ('$getMesg', 'Data sudah ada di database')";

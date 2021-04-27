@@ -4,8 +4,8 @@
 
 ### Hapus task
 - Mengandung kata kunci  'sudah selesai', 'beres', 'hapus',
-- Mengandung kata kunci 'task' atau 'tugas', diikuti nomor ID
-- Contoh `Halo bot, saya sudah selesai mengerjakan tugas 5`
+- Mengandung kata kunci 'task' diikuti nomor ID
+- Contoh `Halo bot, saya sudah selesai mengerjakan task 5`
 - `Hapus task 10`
 
 ### Tampilkan task
