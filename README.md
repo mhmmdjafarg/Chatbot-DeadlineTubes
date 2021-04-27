@@ -5,7 +5,7 @@
 ## Kata kunci perintah
 ### Kumpulan kata kunci
 - kata kunci task ('kuis', 'tubes', 'tucil', 'ujian', 'praktikum', 'tugas', 'pr')
-- Kata kunci addtask ()
+- Kata kunci addtask ("pada", kata kunci task, kode kuliah (WWDDDD) dengan W huruf dan D angka, tanggal yang belum dilalui)
 - kata kunci hapus task ('sudah selesai', 'beres', 'hapus')
 - Kata kunci tampilkan task ('apa saja', 'tampilkan', 'daftar')
 - Kata kunci time period ('sejauh ini', 'sampai saat ini', 'minggu ke depan', 'hari ke depan', 'hari ini', 'antara', 'semua')

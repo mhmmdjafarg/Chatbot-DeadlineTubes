@@ -14,7 +14,7 @@ $timeperiod = array(
   'antara',
   'semua'
 );
-
+$katakunciall = array("januari", "februari", "maret", "april", "mei", "juni", "juli", "agustus", "september", "oktober", "november", "desember",'kuis', 'tubes', 'tucil', 'ujian', 'praktikum', 'tugas', 'pr',  'tampilkan', 'daftar','sejauh', 'sampai', 'minggu', 'hari' ,'depan', 'antara', 'semua','diundur', 'jadwal','ulang', 'perbarui','kapan', 'deadline','lakukan', 'bisa','ngapain');
 
 // ================== delete task ===================
 function isdeletetask($input)
@@ -78,7 +78,7 @@ function isAddTask($input){
   $isdateusenamemonth = false;
   foreach ($bulan as $namabulan){
       if ($isdateusenamemonth == false){
-          $pattern = "/pada (\d{2}) (".$namabulan.") (\d{4})/i";
+          $pattern = "/pada (\d{1,2}) (".$namabulan.") (\d{4})/i";
           $isdateusenamemonth = preg_match($pattern,$input,$date);
       }
   }
@@ -94,7 +94,7 @@ function isAddTask($input){
     return validateDate($day,$month, $year) && (date("Y-m-d") <= date("Y-m-d",mktime(0,0,0,$month,$day,$year))); 
 
   }
-  preg_match("/pada (\d{2})([\-\/\.\s])(\d{2})\g{-2}(\d{4})/i",$input,$date);
+  preg_match("/pada (\d{1,2})([\-\/\.\s])(\d{2})\g{-2}(\d{4})/i",$input,$date);
   return validateDate((int)$date[1],(int)$date[3], (int)$date[4]) && (date("Y-m-d") <= date("Y-m-d",mktime(0,0,0,(int)$date[3],(int)$date[1],(int)$date[4]))); 
   
 }
@@ -122,7 +122,7 @@ function addTask($input){
   $isdateusenamemonth = false;
   foreach ($bulan as $namabulan){
     if ($isdateusenamemonth == false){
-        $pattern = "/pada (\d{2}) (".$namabulan.") (\d{4})/i";
+        $pattern = "/pada (\d{1,2}) (".$namabulan.") (\d{4})/i";
         $isdateusenamemonth = preg_match($pattern,$input,$date);
       }
   }
@@ -136,7 +136,7 @@ function addTask($input){
     }
     $d = mktime(0,0,0,$month,$day,$year);
   }else{
-    preg_match("/pada (\d{2})([\-\/\.\s])(\d{2})\g{-2}(\d{4})/i",$input,$date);
+    preg_match("/pada (\d{1,2})([\-\/\.\s])(\d{2})\g{-2}(\d{4})/i",$input,$date);
     $d = mktime(0,0,0,(int)$date[1],(int)$date[3], (int)$date[4]);
   }
   $topik = "";
@@ -389,7 +389,47 @@ function lev ($str1, $str2){
 function isTypo($str1,$str2){
   $lev = lev($str1,$str2);
   $maks = max(strlen($str1), strlen($str2));
-  return $lev <= ($maks/4);
+  return $lev <= ($maks/4) && $lev > 0;
 }
+
+function isThereTypo($input){
+  $data = preg_split('/ +/',$input);
+  global $katakunciall;
+  for ($i = 0 ; $i < sizeof($data); $i++){
+    for ($j = 0; $j < sizeof($katakunciall); $j++){
+      if (isTypo($data[$i],$katakunciall[$j])){
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+function replaceTypo($input){
+  $data = preg_split('/ +/',$input);
+  $arraytypo = array();
+  global $katakunciall;
+  for ($i = 0 ; $i < sizeof($data); $i++){
+    for ($j = 0; $j < sizeof($katakunciall); $j++){
+      if (isTypo($data[$i],$katakunciall[$j])){
+        $data[$i]=$katakunciall[$j];
+        array_push($arraytypo,$i);
+      }
+    }
+  }
+  $ouput = "";
+  $j = 0;
+  for ($i = 0; $i < sizeof($data); $i++){
+    if ($i == $arraytypo[$j]){
+      $ouput .= "<i>".$data[$i]."</i>";
+      $j++;
+    }else $ouput .= $data[$i];
+    $ouput .= " ";
+  }
+  return $ouput;
+}
+
+// echo lev("deadline","dedlen");
+
 
 // var_dump(isTypo("haloo","halo"));

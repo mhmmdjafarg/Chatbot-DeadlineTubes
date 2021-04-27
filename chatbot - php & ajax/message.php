@@ -106,7 +106,10 @@ if (isAddTask($getMesg)) {
   }
 } else if (strtolower($getMesg) == 'halo' || strtolower($getMesg) == 'hai') {
   echo "Halo halo, tanya dong aku bisa ngapain aja";
-} else{
+}else if(isThereTypo(($getMesg))){
+  $recommend = replaceTypo(($getMesg));
+  echo "Mungkin maksud kamu <br> $recommend";
+}else{
   echo "Pesan tidak dikenali";
 }
 mysqli_close($conn);
