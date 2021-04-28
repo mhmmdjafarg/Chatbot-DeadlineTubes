@@ -75,6 +75,7 @@ function isAddTask($input){
   }
   if ($isThereTask == -1) return false;
   if (! preg_match("/\b[a-z]{2}\d{4}\b/i", $input)) return false;
+  if (! preg_match("/pada/", $message)) return false;
   $isdateusenamemonth = false;
   foreach ($bulan as $namabulan){
       if ($isdateusenamemonth == false){
@@ -83,6 +84,7 @@ function isAddTask($input){
       }
   }
   if ($isdateusenamemonth){
+    // echo "please ga nyampe sini";
     if (preg_match("/tanggal/",$message)){
       $day = (int) $date[5];
       $year = (int) $date[7];
@@ -93,7 +95,8 @@ function isAddTask($input){
       $year = (int) $date[4];
       $month = $date[3];
     }
-  }else{
+  }else if (preg_match("/(pada\s+(\d{1,2})([\-\/\.\s])(\d{2})\g{-2}(\d{4}))|(pada\s+tanggal\s+(\d{1,2})([\-\/\.\s])(\d{2})\g{-2}(\d{4}))/i",$message)){
+    // echo "please ga nyampe sini";
     preg_match("/(pada\s+(\d{1,2})([\-\/\.\s])(\d{2})\g{-2}(\d{4}))|(pada\s+tanggal\s+(\d{1,2})([\-\/\.\s])(\d{2})\g{-2}(\d{4}))/i",$message,$date);
     if (preg_match("/tanggal/", $message)){
       $day = (int) $date[7];
@@ -104,7 +107,8 @@ function isAddTask($input){
       $year = (int) $date[5];
       $month = $date[4];
     }
-  }
+  }else return false;
+  // echo "helo";
   if ($isdateusenamemonth){
     $bulans = -1;
     for ($i = 0; $i < 12; $i++){
@@ -118,7 +122,7 @@ function isAddTask($input){
 }
 
 //  
-// var_dump(isAddTask("Halo bot tolong tambahin PrakTIkum IF2311 pada 23 04 2020"));
+// var_dump(isAddTask("Halo bot kapan deadline tubes if2230"));
 
 function addTask($input){
   $lowerinput = strtolower($input);
