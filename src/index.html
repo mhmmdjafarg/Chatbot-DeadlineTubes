@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="style2.css">
+</head>
+<body>
+
+  <div class="container">
+    <div class="teks">
+      <button class="button" onclick="document.location='../index.php'">Back</button>
+      <h1>Kata Kunci Perintah</h1>
+
+      <h2>Kumpulan kata kunci</h2>
+      <ul>
+        <li>Kata kunci task ('kuis', 'tubes', 'tucil', 'ujian', 'praktikum', 'tugas', 'pr')</li>
+        <li>Kata kunci addtask ("pada", kata kunci task, kode kuliah (WWDDDD) dengan W huruf dan D angka, tanggal yang belum dilalui)</li>
+        <li>Kata kunci hapus task ('sudah selesai', 'beres', 'hapus')</li>
+        <li>Kata kunci tampilkan task ('apa saja', 'tampilkan', 'daftar')</li>
+        <li>Kata kunci time period ('sejauh ini', 'sampai saat ini', 'minggu ke depan', 'hari ke depan', 'hari ini', 'antara', 'semua')</li>
+        <li>Kata kunci perbarui task ('diundur', 'jadwal ulang', 'perbarui')</li>
+        <li>Kata kunci spesifik task ('kapan', 'deadline')</li>
+        <li>Kata kunci help ('bisa lakukan apa', 'bisa ngapain')</li>
+      </ul>
+
+      <h2>Add task</h2>
+      <ul>
+        <li>Mengandung kata kunci task ('kuis', 'tubes', 'tucil', 'ujian', 'praktikum', 'tugas', 'pr')</li>
+        <li>Mengandung kode kuliah yang valid (2 huruf dan 4 angka)</li>
+        <li>Mengandung tanggal yang valid sebagai deadline yang didahului kata "pada"</li>
+        <li>Meletakkan topik tugas di antara kode kuliah dan kata "pada" sebelum tanggal deadline</li>
+        <li>Contoh :</li>
+        <p>-‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎Halo bot tolong tambahin pr IF2311 membajak sawah pada 23 mei 2021</p>
+      </ul>
+
+      <h2>Hapus task</h2>
+      <ul>
+        <li>Mengandung kata kunci 'sudah selesai', 'beres', 'hapus',</li>
+        <li>Mengandung kata kunci 'task' diikuti nomor ID</li>
+        <li>Contoh :</li>
+        <p>-‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎Halo bot, saya sudah selesai mengerjakan task 5</p>
+        <p>-‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎Hapus task 10</p>
+      </ul>
+
+      <h2>Tampilkan task</h2>
+      <ul>
+        <li>Mengandung kata kunci 'apa saja', 'tampilkan', 'daftar'</li>
+        <li>Mengandung kata 'deadline'</li>
+        <li>Mengandung kata bersifat time period berikut : 'sejauh ini', 'sampai saat ini', 'minggu ke depan', 'hari ke depan', 'hari ini', 'antara', 'semua'</li>
+        <li>Opsional, mengandung keyword tugas tertentu antara lain : 'kuis', 'tubes', 'tucil', 'ujian', 'praktikum', 'tugas', 'pr'</li>
+        <li>Jika menggunakan 'antara' harus mengandung 2 format tanggal masukan YYYY-MM-DD atau YYYY/MM/DD</li>
+        <li>Jika mengandung 'minggu ke depan' atau 'hari ke depan' terdapat Nomor ID sebelum kata tersebut.</li>
+        <li>Contoh :</li>
+        <p>-‏‏‎ ‎‏‏‎ ‎‏‏‎ Halo bot apa saja deadline 5 minggu ke depan ?</p>
+        <p>-‏‏‎ ‎‏‏‎ ‎‏‏‎ ‎Halo bot tampilkan deadline sejauh ini</p>
+        <p>-‏‏‎ ‎‏‏‎ ‎‏‏‎ Halo bot daftar deadline kuis antara 2021-03-20 sampai 2021-04-30</p>
+      </ul>
+
+      <h2>Perbarui task</h2>
+      <ul>
+        <li>Mengandung kata kunci 'diundur', 'jadwal ulang', 'perbarui'</li>
+        <li>Mengandung kata 'deadline'</li>
+        <li>Mengandung 1 format tanggal YYYY-MM-DD atau YYYY/MM/DD yaitu tanggal baru dari suatu tugas</li>
+        <li>Mengandung kata 'task X' dengan X adalah nomor id task pada database, tanggal baru harus lebih besar dari tanggal hari ini</li>
+        <li>Contoh Halo bot deadline task 3 dijadwal ulang menjadi 2021-04-30</li>
+        <li>Jika mengandung 'minggu ke depan' atau 'hari ke depan' terdapat Nomor ID sebelum kata tersebut.</li>
+        <li>Contoh :</li>
+        <p>-‏‏‎ ‎‏‏‎ ‎‏‏‎ Halo bot deadline task 3 dijadwal ulang menjadi 2021-04-30</p>
+        <p>-‏‏‎ ‎‏‏‎ ‎‏‏‎ Perbarui deadline task 3 menjadi 2021-05-01</p>
+        <p>-‏‏‎ ‎‏‏‎ ‎‏‏‎ Deadline task 3 diundur jadi 2021-05-02</p>
+        
+      </ul>
+
+      <h2>Lihat deadline suatu task</h2>
+      <ul>
+        <li>Mengandung kata kunci 'kapan' atau 'deadline'</li>
+        <li>Mengandung kata kunci salah satu berikut : 'kuis', 'tubes', 'tucil', 'ujian', 'praktikum', 'tugas', 'pr'</li>
+        <li>Mengandung nama mata kuliah</li>
+        <li>Contoh :</li>
+        <p>-‏‏‎ ‎‏‏‎ ‎‏‏‎ Halo bot deadline tubes IF2230 kapan ?</p>
+      </ul>
+      
+      <br>
+      
+    </div>
+  </div>
+  
+</body>
+</html>
