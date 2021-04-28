@@ -14,7 +14,7 @@ $timeperiod = array(
   'antara',
   'semua'
 );
-$katakunciall = array("januari", "februari", "maret", "april", "mei", "juni", "juli", "agustus", "september", "oktober", "november", "desember",'kuis', 'tubes', 'tucil', 'ujian', 'praktikum', 'tugas', 'pr',  'tampilkan', 'daftar','sejauh', 'sampai', 'minggu', 'hari' ,'depan', 'antara', 'semua','diundur', 'jadwal','ulang', 'perbarui','kapan', 'deadline','lakukan', 'bisa','ngapain');
+$katakunciall = array("januari", "februari", "maret", "april", "mei", "juni", "juli", "agustus", "september", "oktober", "november", "desember",'kuis', 'tubes', 'tucil', 'ujian', 'praktikum', 'tugas', 'pr',  'tampilkan', 'daftar','sejauh', 'sampai', 'minggu', 'hari' ,'depan', 'antara', 'semua','diundur', 'jadwal','ulang', 'perbarui','kapan', 'deadline','lakukan', 'bisa','ngapain', 'tanggal');
 
 // ================== delete task ===================
 function isdeletetask($input)
@@ -78,27 +78,46 @@ function isAddTask($input){
   $isdateusenamemonth = false;
   foreach ($bulan as $namabulan){
       if ($isdateusenamemonth == false){
-          $pattern = "/pada (\d{1,2}) (".$namabulan.") (\d{4})/i";
-          $isdateusenamemonth = preg_match($pattern,$input,$date);
+          $pattern = "/(pada\s+(\d{1,2})\s+(".$namabulan.")\s+(\d{4}))|pada\s+tanggal\s+(\d{1,2})\s+(".$namabulan.")\s+(\d{4})/i";
+          $isdateusenamemonth = preg_match($pattern,$message,$date);          
       }
   }
   if ($isdateusenamemonth){
-    $day = (int) $date[1];
-    $year = (int) $date[3];
+    if (preg_match("/tanggal/",$message)){
+      $day = (int) $date[5];
+      $year = (int) $date[7];
+      $month = $date[6];
+      
+    }else{
+      $day = (int) $date[2];
+      $year = (int) $date[4];
+      $month = $date[3];
+    }
+  }else{
+    preg_match("/(pada\s+(\d{1,2})([\-\/\.\s])(\d{2})\g{-2}(\d{4}))|(pada\s+tanggal\s+(\d{1,2})([\-\/\.\s])(\d{2})\g{-2}(\d{4}))/i",$message,$date);
+    if (preg_match("/tanggal/", $message)){
+      $day = (int) $date[7];
+      $year = (int) $date[10];
+      $month = $date[9];
+    }else{
+      $day = (int) $date[2];
+      $year = (int) $date[5];
+      $month = $date[4];
+    }
+  }
+  if ($isdateusenamemonth){
+    $bulans = -1;
     for ($i = 0; $i < 12; $i++){
-      if ($date[2] == $bulan[$i]){
-        $month = $i+1;
+      if ($month == $bulan[$i]){
+        $bulans = $i+1;
       }
     }
-    
-    return validateDate($day,$month, $year) && (date("Y-m-d") <= date("Y-m-d",mktime(0,0,0,$month,$day,$year))); 
-
   }
-  preg_match("/pada (\d{1,2})([\-\/\.\s])(\d{2})\g{-2}(\d{4})/i",$input,$date);
-  return validateDate((int)$date[1],(int)$date[3], (int)$date[4]) && (date("Y-m-d") <= date("Y-m-d",mktime(0,0,0,(int)$date[3],(int)$date[1],(int)$date[4]))); 
-  
+  else $bulans = $month;
+  return validateDate($day,$bulans, $year) && (date("Y-m-d") <= date("Y-m-d",mktime(0,0,0,$bulans,$day,$year)));
 }
 
+// var_dump(isAddTask("Halo bot tolong tambahin praktikum IF2311 pada 23 12 2021"));
 // var_dump(isAddTask("Halo bot tolong tambahin PrakTIkum IF2311 pada 23 04 2020"));
 
 function addTask($input){
@@ -122,23 +141,43 @@ function addTask($input){
   $isdateusenamemonth = false;
   foreach ($bulan as $namabulan){
     if ($isdateusenamemonth == false){
-        $pattern = "/pada (\d{1,2}) (".$namabulan.") (\d{4})/i";
-        $isdateusenamemonth = preg_match($pattern,$input,$date);
+        $pattern = "/(pada (\d{1,2}) (".$namabulan.") (\d{4}))|pada tanggal (\d{1,2}) (".$namabulan.") (\d{4})/i";
+        $isdateusenamemonth = preg_match($pattern,$lowerinput,$date);
       }
   }
   if ($isdateusenamemonth){
-    $day = (int) $date[1];
-    $year = (int) $date[3];
+    if (preg_match("/tanggal/",$lowerinput)){
+      $day = (int) $date[5];
+      $year = (int) $date[7];
+      $month = $date[6];
+      
+    }else{
+      $day = (int) $date[2];
+      $year = (int) $date[4];
+      $month = $date[3];
+    }
+  }else{
+    preg_match("/(pada\s+(\d{1,2})([\-\/\.\s])(\d{2})\g{-2}(\d{4}))|(pada\s+tanggal\s+(\d{1,2})([\-\/\.\s])(\d{2})\g{-2}(\d{4}))/i",$lowerinput,$date);
+    if (preg_match("/tanggal/", $lowerinput)){
+      $day = (int) $date[7];
+      $year = (int) $date[10];
+      $month = $date[9];
+    }else{
+      $day = (int) $date[2];
+      $year = (int) $date[5];
+      $month = $date[4];
+    }
+  }
+  if ($isdateusenamemonth){
+    $bulans = -1;
     for ($i = 0; $i < 12; $i++){
-      if ($date[2] == $bulan[$i]){
-        $month = $i+1;
+      if ($month == $bulan[$i]){
+        $bulans = $i+1;
       }
     }
-    $d = mktime(0,0,0,$month,$day,$year);
-  }else{
-    preg_match("/pada (\d{1,2})([\-\/\.\s])(\d{2})\g{-2}(\d{4})/i",$input,$date);
-    $d = mktime(0,0,0,(int)$date[1],(int)$date[3], (int)$date[4]);
   }
+  else $bulans = $month;
+  $d = mktime(0,0,0,$bulans,$day,$year);
   $topik = "";
   $indexpada = booyermoore("pada", $lowerinput)-1;
   $indexkode = booyermoore($kodekuliah,$input);
@@ -153,7 +192,7 @@ function addTask($input){
 
 }
 // addTask("Halo bot tolong tambahin pr IF2311 membajak sawah pada 23 mei 2021");
-
+// echo addTask("Halo bot tolong tambahin pr IF2311 membajak sawah pada 23 Mei 2021");
 // ================== ask for help ====================
 function isAskingForHelp($input){
   return preg_match("/(?=.*bisa)((?=.*lakukan)(?=.*apa)|(?=.*ngapain))\w*/i",$input) ? true : false;
