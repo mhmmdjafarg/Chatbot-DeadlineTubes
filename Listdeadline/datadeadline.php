@@ -14,7 +14,7 @@ $result = $conn->query($query);
 if (mysqli_num_rows($result) > 0) {
   echo $header . "<p>Hello, ini daftar deadline kamu sejauh ini" . "</p></div></div>";
   // output data of each row
-  $class = "<div class=\"bot-inbox inbox\" style = \"align-items: center;\"><div class=\"icon\"><img src=\"assets/blue-snow.png\" class=\"agent\"></div><div class=\"msg-body\">";
+  $class = "<div class=\"bot-inbox inbox\" style = \"align-items: center;\"><div class=\"icon\"><img src=\"../assets/blue-snow.png\" class=\"agent\"></div><div class=\"msg-body\">";
   // $class = "<div class=\"bot-inbox inbox\" style = \"align-items: center;\"><div class=\"icon\"><img src=\"https://d17ivq9b7rppb3.cloudfront.net/original/commons/dibantu-pp.png\" class=\"agent\"></div><div class=\"msg-header\">";
   while ($row = $result->fetch_assoc()) {
     $keyword = strtoupper($row["Keyword"]);

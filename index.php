@@ -37,7 +37,11 @@
     </nav> -->
     <!-- Navbar-->
     <div class="wrapper">
-        <div class="title">Deadline Chatbot</div>
+        <div class="title">
+            <button class="button" id="chatbot" onclick="document.location='Listdeadline/index.php'">Back</button>
+            <div class="judul">Deadline Chatbot</div>
+            <button class="button" id="readme" onclick="document.location='Readme/index.html'">Readme</button>
+        </div>
         <div class="form">
             <div class="bot-inbox inbox" style = "align-items: center;">
                 <div class="icon">

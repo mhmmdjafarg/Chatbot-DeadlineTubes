@@ -13,7 +13,7 @@
     <div class="wrapper">
         <div class="title">
             <div class="judul">Data Deadline Kamu Saat ini</div>
-            <button class="button" onclick="document.location='../index.php'">Back</button>
+            <button class="button" onclick="document.location='../index.php'">Chatbot</button>
         </div>
         <div class="form">
             <?php include 'datadeadline.php';?>
