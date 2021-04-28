@@ -11,10 +11,15 @@
 </head>
 <body>
     <div class="wrapper">
-        <div class="title">Data Deadline Kamu Saat ini</div>
+        <div class="title">
+            <div class="judul">Data Deadline Kamu Saat ini</div>
+            <button class="button" onclick="document.location='../index.php'">Back</button>
+        </div>
         <div class="form">
             <?php include 'datadeadline.php';?>
         </div>
-    </div> 
+    </div>
+    <!-- <button class="button" onclick="document.location='../../index.php'">Back</button> -->
+    
 </body>
 </html>
