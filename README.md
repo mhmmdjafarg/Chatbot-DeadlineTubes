@@ -32,8 +32,8 @@ Dalam tugas besar ini, Anda akan diminta untuk membangun sebuah chatbot sederhan
 2. Aktifkan Apache dan MySQL
 3. Clone github https://github.com/tararahuuw/Deadline-Tubes pada directory htdocs
 4. Sesuaikan username dan password MySql Anda menjadi username = "root" dan password = ""
-5. Setup database pada localhost/Deadline-Tubes/src/database.php
-6. Buka browser localhost/Deadline-Tubes/index.php
+5. Setup database pada localhost/Deadline-Tubes/src/src/database.php , jika terdapat pesan `Database created successfullyTabel dropped successfullyTabel created successfully` maka berhasil
+6. Buka browser localhost/Deadline-Tubes/src/index.php
 
 ## Features
 * List of features ready and TODOs for future development
