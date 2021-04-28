@@ -123,7 +123,7 @@ function isAddTask($input){
 }
 
 //  
-var_dump(isAddTask("Halo bot hapus tubes if2230 pada 12 Mei 2021"));
+// var_dump(isAddTask("Halo bot hapus tubes if2230 pada 12 Mei 2021"));
 
 function addTask($input){
   $lowerinput = strtolower($input);
