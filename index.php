@@ -40,7 +40,7 @@
         <div class="title">Deadline Chatbot</div>
         <div class="form">
             <div class="bot-inbox inbox" style = "align-items: center;">
-                <div class="icon" ">
+                <div class="icon">
                     <!-- <i class="fas fa-user"></i> -->
                     <img src="https://d17ivq9b7rppb3.cloudfront.net/original/commons/dibantu-pp.png" class="agent">
                 </div>
