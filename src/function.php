@@ -459,7 +459,7 @@ function replaceTypo($input){
   $ouput = "";
   $j = 0;
   for ($i = 0; $i < sizeof($data); $i++){
-    if ($i == $arraytypo[$j]){
+    if ($j < count($arraytypo) && $i == $arraytypo[$j]){
       $ouput .= "<i>".$data[$i]."</i>";
       $j++;
     }else $ouput .= $data[$i];
