@@ -18,7 +18,7 @@ if (isAddTask($getMesg)) {
   $query = "SELECT * FROM " . $tabelname . " WHERE Id = (SELECT max(Id) from " . $tabelname . ")";
   $result = $conn->query($query);
   $row = $result->fetch_assoc();
-  echo "Task berhasil dicatat\n (ID: " . $row["Id"] . ") " . $row["Deadline"] . " - " . $row["Subjects"] . " - " . $row['Keyword'] . " - " . $row["Topic"] . "<br><br>";
+  echo "Task berhasil dicatat\n (ID: " . $row["Id"] . ") " . $row["Deadline"] . " - " .$row['Keyword']  . " - " . ($row["Topic"] == "" ? ""  : $row["Topic"] . " - ") . $row["Subjects"] . "<br><br>";
 }else if(isAskingForHelp($getMesg)){
   echo "[Fitur]\n<br><br>
         1. Menambahkan task baru\n<br>
@@ -106,7 +106,7 @@ if (isAddTask($getMesg)) {
   }
 } else if (strtolower($getMesg) == 'halo' || strtolower($getMesg) == 'hai') {
   echo "Halo halo, tanya dong aku bisa ngapain aja";
-}else if(isThereTypo(($getMesg))){
+}else if(isThereTypo((strtolower($getMesg)))){
   $recommend = replaceTypo(($getMesg));
   echo "Mungkin maksud kamu <br> $recommend";
 }else{

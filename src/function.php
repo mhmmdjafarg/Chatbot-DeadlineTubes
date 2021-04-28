@@ -117,7 +117,7 @@ function isAddTask($input){
   return validateDate($day,$bulans, $year) && (date("Y-m-d") <= date("Y-m-d",mktime(0,0,0,$bulans,$day,$year)));
 }
 
-// var_dump(isAddTask("Halo bot tolong tambahin praktikum IF2311 pada 23 12 2021"));
+//  
 // var_dump(isAddTask("Halo bot tolong tambahin PrakTIkum IF2311 pada 23 04 2020"));
 
 function addTask($input){
@@ -182,17 +182,20 @@ function addTask($input){
   $indexpada = booyermoore("pada", $lowerinput)-1;
   $indexkode = booyermoore($kodekuliah,$input);
   $iterate = $indexkode + 7;
-  while ($iterate != $indexpada){
-    $topik .= $input[$iterate];
-    $iterate++;
+  if ($iterate <= $indexpada){
+    while ($iterate != $indexpada){
+      $topik .= $input[$iterate];
+      $iterate++;
+    }
   }
+  
   global $tabelname;
   $query = "INSERT INTO ".$tabelname."(Deadline,Subjects,Keyword,Topic) VALUES(\"".date("Y-m-d",$d)."\", \"".$kodekuliah."\", \"".$jenistugas."\",\"".$topik."\")";
   return $query;
 
 }
 // addTask("Halo bot tolong tambahin pr IF2311 membajak sawah pada 23 mei 2021");
-// echo addTask("Halo bot tolong tambahin pr IF2311 membajak sawah pada 23 Mei 2021");
+// echo addTask("bot tambahin pr IF2111 pada tanggal 5 Mei 2021");
 // ================== ask for help ====================
 function isAskingForHelp($input){
   return preg_match("/(?=.*bisa)((?=.*lakukan)(?=.*apa)|(?=.*ngapain))\w*/i",$input) ? true : false;
@@ -445,7 +448,9 @@ function isThereTypo($input){
 }
 
 function replaceTypo($input){
-  $data = preg_split('/ +/',$input);
+  $lowerinput = strtolower($input);
+  $data = preg_split('/ +/',$lowerinput);
+  $dataasli = preg_split('/ +/',$input);
   $arraytypo = array();
   global $katakunciall;
   for ($i = 0 ; $i < sizeof($data); $i++){
@@ -462,7 +467,7 @@ function replaceTypo($input){
     if ($j < count($arraytypo) && $i == $arraytypo[$j]){
       $ouput .= "<i>".$data[$i]."</i>";
       $j++;
-    }else $ouput .= $data[$i];
+    }else $ouput .= $dataasli[$i];
     $ouput .= " ";
   }
   return $ouput;
