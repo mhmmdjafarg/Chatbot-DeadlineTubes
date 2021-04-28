@@ -32,7 +32,7 @@
 - Mengandung kata bersifat time period berikut : 'sejauh ini', 'sampai saat ini', 'minggu ke depan', 'hari ke depan', 'hari ini', 'antara', 'semua'
 - Opsional, mengandung keyword tugas tertentu antara lain : 'kuis', 'tubes', 'tucil', 'ujian', 'praktikum', 'tugas', 'pr'
 - Jika menggunakan 'antara' harus mengandung 2 format tanggal masukan YYYY-MM-DD atau YYYY/MM/DD
-- Jika mengandung 'minggu ke depan' atau 'hari ke depan' terdapat Nomor ID sebelum kata tersebut.
+- Jika mengandung N 'minggu ke depan' atau N 'hari ke depan' terdapat jumlah hari atau jumlah minggu sebelum kata tersebut.
 - Contoh : `Halo bot apa saja deadline 5 minggu ke depan ?`
 - `Halo bot tampilkan deadline sejauh ini`
 - `Halo bot daftar deadline kuis antara 2021-03-20 sampai 2021-04-30`
