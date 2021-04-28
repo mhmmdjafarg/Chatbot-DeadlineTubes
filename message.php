@@ -64,6 +64,7 @@ if (isAddTask($getMesg)) {
     $result = $conn->query($query);
     if (mysqli_num_rows($result) > 0) {
       // output data of each row
+      echo "[Daftar Deadline]<br><br>";
       while ($row = $result->fetch_assoc()) {
         echo "(ID: " . $row["Id"] . ") " . $row["Deadline"] . " - " . $row["Subjects"] . " - " . $row['Keyword'] . " - " . $row["Topic"] . "<br><br>";
       }
