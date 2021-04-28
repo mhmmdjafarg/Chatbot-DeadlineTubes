@@ -338,7 +338,7 @@ function isDelayTask($input)
   $kata = 'deadline';
   // cek tanggal dan ada kata deadline
   $message = str_replace('/', '-', $message); // jika masukan format menggunakan / convert menjadi -
-  if (!$diundur || !preg_match("/\b" . $kata . "\b/i", $message) || !preg_match('(\d{1,4}-\d{1,2}-\d{1,4})', $input)) {
+  if (!$diundur || !preg_match("/\b" . $kata . "\b/i", $message) || !preg_match('(\d{1,4}-\d{1,2}-\d{1,4})', $message)) {
     return false;
   }
   return true;

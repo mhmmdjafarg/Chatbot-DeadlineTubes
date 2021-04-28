@@ -10,7 +10,7 @@ html {
     display: grid;
     height: 100%;
     place-items: center;
-    background-image: url("assets/wallpaper.png");
+    background-image: url("../assets/wallpaper.png");
 }
 
 body {
@@ -43,7 +43,7 @@ body {
 
 .wrapper {
     width: 800px;
-    background-image: url("assets/blue-snow.png");
+    background-image: url("../assets/blue-snow.png");
     border-radius: 10px;
     /* border: 1px solid lightgrey; */
     border-bottom: 8px solid #e7e7e7;
@@ -53,7 +53,7 @@ body {
 .wrapper .title {
     display: grid;
     grid-template-areas:
-    ". Title Title Title button";
+    ". . . Title Title Title Title Title button";
     background: #fe5785;
     color: #fff;
     font-size: 25px;
@@ -69,8 +69,8 @@ body {
 
 .wrapper .form {
     padding: 20px 15px;
-    min-height: 450px;
-    max-height: 450px;
+    min-height: 550px;
+    max-height: 550px;
     overflow-y: auto;
 }
 
@@ -124,8 +124,9 @@ body {
 
 .button {
     grid-area: button;
-    margin: 5px;
-    padding: 7px 7px;
+    height: 70%;
+    margin: 10px;
+    padding: 5px 5px;
     font-size: 18px;
     cursor: pointer;
     text-align: center;
@@ -145,4 +146,8 @@ body {
     background-color: #3e8e41;
     box-shadow: 0 5px #666;
     transform: translateY(4px);
+}
+
+#chatbot{
+    grid-area: button;
 }
