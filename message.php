@@ -36,7 +36,8 @@ if (isAddTask($getMesg)) {
         6. tugas\n<br>
         7. pr\n<br>
         \n<br><br>
-        Lebih lengkapnya baca readme : ntar kasi link readme ke sini";
+        
+        Lebih lengkapnya baca <a href=\"Readme/index.html\">Readme</a>";
 }else if (isdeletetask($getMesg)) {
   $nomorId = getinputtaskid($getMesg);
   if ($nomorId == 0) {
