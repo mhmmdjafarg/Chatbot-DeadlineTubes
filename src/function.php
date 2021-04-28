@@ -64,6 +64,7 @@ function validateDate($day, $month, $year){
 
 // ================== add task ===================
 function isAddTask($input){
+  if (preg_match("/hapus|hilangkan|sudahi|hilang/i", $input)) return false;
   global $bulan;
   global $jenistask;
   $isThereTask = -1;
@@ -122,7 +123,7 @@ function isAddTask($input){
 }
 
 //  
-// var_dump(isAddTask("Halo bot kapan deadline tubes if2230"));
+var_dump(isAddTask("Halo bot hapus tubes if2230 pada 12 Mei 2021"));
 
 function addTask($input){
   $lowerinput = strtolower($input);
