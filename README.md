@@ -1,6 +1,61 @@
 # Deadline-Tubes
+> Penerapan String Matching dan Regular Expression dalam
+Pembangunan Deadline Reminder Assistant “Deadline Chatbot”
 
+## Table of contents
+* [General info](#general-info)
+* [Screenshots](#screenshots)
+* [Technologies](#technologies)
+* [Setup](#setup)
+* [Features](#features)
+* [Status](#status)
+* [Inspiration](#inspiration)
+* [Contact](#contact)
 
+## General info
+Dalam tugas besar ini, Anda akan diminta untuk membangun sebuah chatbot sederhana yang berfungsi untuk membantu mengingat berbagai deadline, tanggal penting, dan task-task tertentu kepada user yang menggunakannya. Dengan memanfaatkan algoritma String Matching dan Regular Expression, Anda dapat membangun sebuah chatbot interaktif sederhana layaknya Google Assistant yang akan menjawab segala pertanyaan Anda terkait informasi deadline tugas-tugas yang ada.
+
+## Screenshots
+![1](https://user-images.githubusercontent.com/49779495/116437438-a6538c80-a877-11eb-9ecc-3a89551ac920.jpg)
+![2](https://user-images.githubusercontent.com/49779495/116437454-a9e71380-a877-11eb-8f29-d6957468eb76.jpg)
+![3](https://user-images.githubusercontent.com/49779495/116437465-ace20400-a877-11eb-9944-86baf28b7b65.jpg)
+
+## Technologies
+* PHP
+* Javascript
+* Mysql
+* HTML
+* CSS
+
+## Setup
+1. Installasi XAMPP
+2. Aktifkan Apache dan MySQL
+3. Clone github https://github.com/tararahuuw/Deadline-Tubes pada directory htdocs
+4. Sesuaikan username dan password MySql Anda menjadi username = "root" dan password = ""
+5. Setup database pada localhost/Deadline-Tubes/src/database.php
+6. Buka browser localhost/Deadline-Tubes/index.php
+
+## Features
+* List of features ready and TODOs for future development
+* Menambah task baru
+* Menampilkan daftar task
+* Menampilkan deadline suatu task
+* Memperbarui deadline suatu task
+* Menandai task sudah selesai
+* Menampilkan apa saja yang bisa dilakukan chat bot
+* Menampilkan kalimat-kalimat yang tidak dikenali
+* Memberikan sugesti pada typo kata-kata yang dianggap penting
+
+## Status
+Project is: _finished_
+
+## Inspiration
+https://informatika.stei.itb.ac.id/~rinaldi.munir/Stmik/2020-2021/Tugas-Besar-3-IF2211-Strategi-Algoritma-2021.pdf
+
+## Contact
+Created by Muhammad Fahmi Alamsyah - feel free to contact me!
+Created by Widya Anugrah Putra - feel free to contact me!
+Created by M. Jafar Gundari - feel free to contact me!
 
 ## Kata kunci perintah
 ### Kumpulan kata kunci
