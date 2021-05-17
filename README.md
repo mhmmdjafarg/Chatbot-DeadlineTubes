@@ -14,6 +14,7 @@ Pembangunan Deadline Reminder Assistant “Deadline Chatbot”
 
 ## General info
 Dalam tugas besar ini, Anda akan diminta untuk membangun sebuah chatbot sederhana yang berfungsi untuk membantu mengingat berbagai deadline, tanggal penting, dan task-task tertentu kepada user yang menggunakannya. Dengan memanfaatkan algoritma String Matching dan Regular Expression, Anda dapat membangun sebuah chatbot interaktif sederhana layaknya Google Assistant yang akan menjawab segala pertanyaan Anda terkait informasi deadline tugas-tugas yang ada.
+Hosting : [hosting](https://deadline-tubes.000webhostapp.com/)
 
 ## Screenshots
 ![1](https://user-images.githubusercontent.com/49779495/116437438-a6538c80-a877-11eb-9ecc-3a89551ac920.jpg)
